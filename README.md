@@ -1,1 +1,1 @@
-# ecokuza
+# EcoKuza
