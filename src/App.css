@@ -93,16 +93,17 @@ body {
 /* Hero Section */
 .hero {
   background-color: #f5f5f5;
-  padding: 100px 0;
+  padding: 140px 0 120px 0;
   text-align: center;
   background-size: cover;
-  background-position: center;
+  background-position: center 30%;
   background-repeat: no-repeat;
   position: relative;
-  min-height: 70vh;
+  min-height: 90vh;
   display: flex;
   align-items: center;
   background-attachment: fixed;
+  margin-top: 0;
 }
 
 .hero::before {
@@ -112,7 +113,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.3) 100%);
   z-index: 1;
 }
 
@@ -402,38 +403,57 @@ body {
 .footer {
   background-color: #333;
   color: white;
-  padding: 30px 0;
+  padding: 50px 0 30px 0;
   text-align: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.footer-location {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #fff;
 }
 
 .footer-links {
   display: flex;
   justify-content: center;
   list-style: none;
-  margin-bottom: 20px;
+  margin: 0;
+  padding: 0;
+  gap: 30px;
 }
 
 .footer-links li {
-  margin: 0 15px;
+  margin: 0;
 }
 
 .footer-links a {
   color: white;
   text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease;
+  padding: 8px 16px;
+  border-radius: 4px;
 }
 
 .footer-links a:hover {
-  text-decoration: underline;
+  color: #2e7d32;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.copyright {
+.footer-copyright {
   font-size: 14px;
   color: #ccc;
-}
-
-.location {
-  margin-bottom: 10px;
-  font-size: 16px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #555;
 }
 
 /* Responsive Design */
@@ -495,9 +515,10 @@ body {
   
   /* Hero Responsive */
   .hero {
-    padding: 80px 0;
-    min-height: 60vh;
+    padding: 120px 0 100px 0;
+    min-height: 80vh;
     background-attachment: scroll;
+    background-position: center 35%;
   }
   
   .hero h1 {
@@ -627,27 +648,32 @@ body {
   
   /* Footer Responsive */
   .footer {
-    padding: 40px 0;
+    padding: 40px 0 25px 0;
+  }
+  
+  .footer-content {
+    gap: 25px;
+  }
+  
+  .footer-location {
+    font-size: 16px;
   }
   
   .footer-links {
+    gap: 20px;
     flex-direction: column;
-    gap: 15px;
-    margin-bottom: 25px;
+    align-items: center;
   }
   
   .footer-links a {
-    font-size: 16px;
-    padding: 8px 0;
-  }
-  
-  .location {
-    font-size: 18px;
-    margin-bottom: 15px;
-  }
-  
-  .copyright {
     font-size: 15px;
+    padding: 10px 20px;
+  }
+  
+  .footer-copyright {
+    font-size: 13px;
+    margin-top: 15px;
+    padding-top: 15px;
   }
 }
 
@@ -691,9 +717,10 @@ body {
   
   /* Hero Mobile */
   .hero {
-    padding: 60px 0;
-    min-height: 50vh;
+    padding: 100px 0 80px 0;
+    min-height: 70vh;
     background-attachment: scroll;
+    background-position: center 40%;
   }
   
   .hero h1 {
