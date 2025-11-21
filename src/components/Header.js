@@ -6,7 +6,7 @@ const Header = () => {
       <div className="container">
         <div className="header-content">
           <div className="logo">
-            <img src="/images/logo/econuza-logo.png" alt="ECONUZA" className="logo-img" />
+            <img src="/images/logo/econuza-logo.png" alt="ECONUZA Logo - Environmental Education Platform" className="logo-img" loading="eager" />
           </div>
           <nav>
             <ul className="nav-links">

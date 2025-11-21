@@ -8,21 +8,21 @@ const Process = () => {
         <div className="process-steps">
           <div className="step" id="step-1">
             <div className="step-icon">
-              <img src="/images/process/step1-plant.png" alt="Plant and Record" />
+              <img src="/images/process/step1-plant.png" alt="Step 1: Plant and Record trees with GPS tracking using EcoKuza App" loading="lazy" />
             </div>
             <h3>Plant and Record</h3>
             <p>The Club Mentor Uploads tree Photos with GPS using the EcoKuza App</p>
           </div>
           <div className="step">
             <div className="step-icon">
-              <img src="/images/process/step2-ai.png" alt="AI Verifies Growth" />
+              <img src="/images/process/step2-ai.png" alt="Step 2: AI technology verifies tree growth through satellite imagery" loading="lazy" />
             </div>
             <h3>AI Verifies Growth</h3>
             <p>AI and Satellite Checks and Confirms the Trees are Real and Grown</p>
           </div>
           <div className="step">
             <div className="step-icon">
-              <img src="/images/process/step3-rewards.png" alt="Earn Points and Rewards" />
+              <img src="/images/process/step3-rewards.png" alt="Step 3: Earn points and rewards for successful tree planting" loading="lazy" />
             </div>
             <h3>Earn Points and Rewards</h3>
             <p>Schools Climb Leader-boards and Receive Recognition from NGOs and Government Partners</p>

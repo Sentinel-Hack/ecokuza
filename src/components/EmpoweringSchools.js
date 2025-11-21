@@ -12,21 +12,21 @@ const EmpoweringSchools = () => {
         <div className="features">
           <div className="feature">
             <div className="feature-image">
-              <img src="/images/features/strong-clubs.jpg" alt="Strong Environmental Clubs" />
+              <img src="/images/features/strong-clubs.jpg" alt="Strong Environmental Clubs - Students participating in tree planting activities" loading="lazy" />
             </div>
             <h3>Strong Environmental Clubs</h3>
             <p>Activities, Challenges, and Mentorship Built-in</p>
           </div>
           <div className="feature">
             <div className="feature-image">
-              <img src="/images/features/simple-tools.jpg" alt="Simple Tools for Real Impact" />
+              <img src="/images/features/simple-tools.jpg" alt="Simple Tools for Real Impact - Easy tree tracking interface for teachers and students" loading="lazy" />
             </div>
             <h3>Simple Tools for Real Impact</h3>
             <p>Easy Tree Tracking for Teachers and Students</p>
           </div>
           <div className="feature">
             <div className="feature-image">
-              <img src="/images/features/collaboration.jpg" alt="Collaboration That Works" />
+              <img src="/images/features/collaboration.jpg" alt="Collaboration That Works - Schools, NGOs and government working together" loading="lazy" />
             </div>
             <h3>Collaboration That Works</h3>
             <p>Schools, NGOs and Government Aligned under One Platform</p>
