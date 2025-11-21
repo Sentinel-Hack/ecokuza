@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -32,15 +36,25 @@ body {
   font-size: 24px;
   font-weight: bold;
   color: #2e7d32;
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 40px;
+  margin-right: 10px;
 }
 
 .nav-links {
   display: flex;
   list-style: none;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
 }
 
 .nav-links li {
-  margin-left: 30px;
+  margin: 0;
 }
 
 .nav-links a {
@@ -57,42 +71,89 @@ body {
   background-color: #2e7d32;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
+  padding: 12px 24px;
+  border-radius: 8px;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 20px;
+}
+
+.register-btn:hover {
+  background-color: #1b5e20;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
 }
 
 /* Hero Section */
 .hero {
   background-color: #f5f5f5;
-  padding: 80px 0;
+  padding: 100px 0;
   text-align: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.8), rgba(0, 0, 0, 0.6));
+  z-index: 1;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-content {
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .hero h1 {
   font-size: 36px;
   font-weight: bold;
-  color: #333;
+  color: #fff;
   margin-bottom: 30px;
   line-height: 1.2;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero p {
   font-size: 18px;
-  color: #666;
+  color: #fff;
   max-width: 700px;
   margin: 0 auto 40px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .hero-btn {
   background-color: #2e7d32;
   color: white;
   border: none;
-  padding: 12px 30px;
-  border-radius: 4px;
+  padding: 15px 40px;
+  border-radius: 8px;
   font-size: 18px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hero-btn:hover {
+  background-color: #1b5e20;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(46, 125, 50, 0.4);
 }
 
 /* Process Section */
@@ -121,20 +182,34 @@ body {
   flex: 1;
   text-align: center;
   padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.step-number {
-  width: 50px;
-  height: 50px;
-  background-color: #2e7d32;
-  color: white;
-  border-radius: 50%;
+.step-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 20px;
-  font-size: 20px;
-  font-weight: bold;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.step-icon:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.step-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .step h3 {
@@ -182,6 +257,23 @@ body {
   flex: 1;
   padding: 0 20px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feature-image {
+  width: 200px;
+  height: 150px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.feature-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .feature h3 {
@@ -211,6 +303,24 @@ body {
   flex: 1;
   padding: 0 20px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.benefit-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.benefit-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .benefit h3 {
@@ -260,4 +370,85 @@ body {
 .location {
   margin-bottom: 10px;
   font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .nav-links {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .register-btn {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  
+  .hero {
+    padding: 60px 0;
+    min-height: 50vh;
+  }
+  
+  .hero h1 {
+    font-size: 28px;
+  }
+  
+  .hero p {
+    font-size: 16px;
+  }
+  
+  .process-steps {
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .features {
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .benefits {
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 24px;
+  }
+  
+  .hero p {
+    font-size: 14px;
+  }
+  
+  .step-icon {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .feature-image {
+    width: 150px;
+    height: 120px;
+  }
+  
+  .benefit-icon {
+    width: 50px;
+    height: 50px;
+  }
 }
