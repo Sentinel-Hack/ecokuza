@@ -13,7 +13,7 @@ export default function App() {
       <header className="fixed top-0 left-0 right-0 bg-[#6DA704] px-12 py-4 flex justify-between items-center z-50">
         <div className="flex items-center gap-2">
           <img src={Logo} alt="EcoKuza Logo" className="h-8 w-8" />
-          <div className="text-black text-xl font-medium">
+          <div className="text-[#3D4F22] text-xl font-medium">
             ECO<span className="text-white">KUZA</span>
           </div>
         </div>
