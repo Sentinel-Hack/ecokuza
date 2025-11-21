@@ -158,24 +158,26 @@ body {
 
 /* Process Section */
 .process {
-  padding: 80px 0;
+  padding: 100px 0;
   background-color: white;
 }
 
 .process h2 {
   text-align: center;
-  font-size: 28px;
+  font-size: 32px;
   color: #333;
-  margin-bottom: 50px;
-  max-width: 800px;
+  margin-bottom: 60px;
+  max-width: 900px;
   margin-left: auto;
   margin-right: auto;
+  font-weight: 600;
 }
 
 .process-steps {
   display: flex;
   justify-content: space-between;
-  margin-top: 50px;
+  margin-top: 80px;
+  gap: 80px;
 }
 
 .step {
@@ -188,22 +190,22 @@ body {
 }
 
 .step-icon {
-  width: 100px;
-  height: 100px;
-  margin-bottom: 25px;
+  width: 350px;
+  height: 350px;
+  margin-bottom: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #f8f9fa;
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .step-icon:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-12px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
 .step-icon img {
@@ -213,14 +215,16 @@ body {
 }
 
 .step h3 {
-  font-size: 20px;
+  font-size: 24px;
   color: #333;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  font-weight: 600;
 }
 
 .step p {
   color: #666;
-  font-size: 16px;
+  font-size: 18px;
+  line-height: 1.6;
 }
 
 /* Empowering Schools Section */
@@ -373,58 +377,211 @@ body {
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .container {
+    max-width: 95%;
+    padding: 0 20px;
+  }
+  
+  .step-icon {
+    width: 300px;
+    height: 300px;
+    padding: 35px;
+  }
+  
+  .process-steps {
+    gap: 60px;
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 0 15px;
   }
   
+  /* Header Responsive */
   .header-content {
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
+    padding: 20px 0;
+  }
+  
+  .logo {
+    font-size: 20px;
+  }
+  
+  .logo-img {
+    height: 35px;
   }
   
   .nav-links {
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
     text-align: center;
+    width: 100%;
+  }
+  
+  .nav-links a {
+    font-size: 18px;
+    padding: 10px 0;
   }
   
   .register-btn {
     margin-left: 0;
-    margin-top: 10px;
+    margin-top: 15px;
+    padding: 15px 30px;
+    font-size: 18px;
+    width: auto;
   }
   
+  /* Hero Responsive */
   .hero {
-    padding: 60px 0;
-    min-height: 50vh;
+    padding: 80px 0;
+    min-height: 60vh;
   }
   
   .hero h1 {
-    font-size: 28px;
+    font-size: 32px;
+    line-height: 1.3;
   }
   
   .hero p {
-    font-size: 16px;
+    font-size: 18px;
+    margin-bottom: 35px;
+  }
+  
+  .hero-btn {
+    padding: 18px 45px;
+    font-size: 20px;
+  }
+  
+  /* Process Responsive */
+  .process {
+    padding: 80px 0;
+  }
+  
+  .process h2 {
+    font-size: 30px;
+    margin-bottom: 50px;
+    line-height: 1.3;
   }
   
   .process-steps {
     flex-direction: column;
-    gap: 40px;
+    gap: 60px;
+    margin-top: 60px;
+  }
+  
+  .step {
+    padding: 0 10px;
+  }
+  
+  .step-icon {
+    width: 250px;
+    height: 250px;
+    padding: 30px;
+    margin-bottom: 40px;
+  }
+  
+  .step h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+  
+  .step p {
+    font-size: 17px;
+  }
+  
+  /* Features Responsive */
+  .empowering-schools {
+    padding: 70px 0;
+  }
+  
+  .section-header h2 {
+    font-size: 28px;
+    line-height: 1.3;
+  }
+  
+  .section-header p {
+    font-size: 17px;
   }
   
   .features {
     flex-direction: column;
-    gap: 40px;
+    gap: 50px;
+    margin-top: 50px;
+  }
+  
+  .feature {
+    padding: 0 20px;
+  }
+  
+  .feature-image {
+    width: 220px;
+    height: 170px;
+    margin-bottom: 25px;
+  }
+  
+  .feature h3 {
+    font-size: 20px;
+  }
+  
+  .feature p {
+    font-size: 16px;
+  }
+  
+  /* Benefits Responsive */
+  .environment-action {
+    padding: 70px 0;
   }
   
   .benefits {
     flex-direction: column;
-    gap: 40px;
+    gap: 50px;
+    margin-top: 50px;
+  }
+  
+  .benefit {
+    padding: 0 20px;
+  }
+  
+  .benefit-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 25px;
+  }
+  
+  .benefit h3 {
+    font-size: 20px;
+  }
+  
+  .benefit p {
+    font-size: 16px;
+  }
+  
+  /* Footer Responsive */
+  .footer {
+    padding: 40px 0;
   }
   
   .footer-links {
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+  
+  .footer-links a {
+    font-size: 16px;
+    padding: 8px 0;
+  }
+  
+  .location {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  
+  .copyright {
+    font-size: 15px;
   }
 }
 
@@ -438,8 +595,9 @@ body {
   }
   
   .step-icon {
-    width: 80px;
-    height: 80px;
+    width: 220px;
+    height: 220px;
+    padding: 30px;
   }
   
   .feature-image {
