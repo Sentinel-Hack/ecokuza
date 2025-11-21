@@ -10,21 +10,21 @@ const EnvironmentAction = () => {
         <div className="benefits">
           <div className="benefit">
             <div className="benefit-icon">
-              <img src="/images/icons/tree-icon.png" alt="More Trees Surviving - Verified tree growth icon" loading="lazy" />
+              <img src="/images/icons/tree-icon.svg" alt="More Trees Surviving - Verified tree growth icon" loading="lazy" />
             </div>
             <h3>More Trees Surviving</h3>
             <p>Tree Growth Is Verified<br />Through AI + Photos + Satellite</p>
           </div>
           <div className="benefit">
             <div className="benefit-icon">
-              <img src="/images/icons/growth-icon.png" alt="Active and Motivated Schools - Growth and motivation icon" loading="lazy" />
+              <img src="/images/icons/growth-icon.svg" alt="Active and Motivated Schools - Growth and motivation icon" loading="lazy" />
             </div>
             <h3>Active and Motivated Schools</h3>
             <p>Leader-boards and Rewards<br />Drive Consistent Participation</p>
           </div>
           <div className="benefit">
             <div className="benefit-icon">
-              <img src="/images/icons/tree-icon.png" alt="Trusted Environmental Data - Data verification icon" loading="lazy" />
+              <img src="/images/icons/tree-icon.svg" alt="Trusted Environmental Data - Data verification icon" loading="lazy" />
             </div>
             <h3>Trusted Environmental Data</h3>
             <p>NGOs and Government Get Verified Reports for Planning and Awards</p>
