@@ -494,10 +494,12 @@ body {
   }
   
   .nav-links {
-    flex-direction: column;
-    gap: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px 24px;
     text-align: center;
     width: 100%;
+    justify-content: center;
   }
   
   .nav-links a {
@@ -701,7 +703,10 @@ body {
   }
   
   .nav-links {
-    gap: 15px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    justify-content: center;
   }
   
   .nav-links a {
