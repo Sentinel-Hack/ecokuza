@@ -26,7 +26,7 @@ export default function App() {
           <a href="#impact" className="text-white uppercase text-sm hover:text-black transition">Impact</a>
 
           <Link
-            to="/dashboard"
+            to="/authpage"
             className="border-2 border-white text-white px-6 py-2 text-xs uppercase tracking-wide hover:bg-white hover:text-[#7ab800] transition"
           >
             Register Your Club
@@ -36,7 +36,7 @@ export default function App() {
         {/* Mobile Register button */}
         <div className="md:hidden">
           <Link
-            to="/dashboard"
+            to="/authpage"
             className="border-2 border-white text-white px-4 py-1.5 text-xs uppercase tracking-wide hover:bg-white hover:text-[#7ab800] transition rounded"
           >
             Register
@@ -56,9 +56,12 @@ export default function App() {
             nationally so students and 4K Clubs stay motivated and recognized.
           </p>
 
-          <button className="border-2 border-[#3D4F22] text-[#3D4F22] px-8 py-3 font-semibold hover:bg-[#3D4F22] hover:text-white transition bg-transparent">
+          <Link
+            to="/authpage"
+            className="border-2 border-[#3D4F22] text-[#3D4F22] px-8 py-3 font-semibold hover:bg-[#3D4F22] hover:text-white transition bg-transparent inline-block"
+          >
             Get Started
-          </button>
+          </Link>
         </div>
 
         <div className="flex-1 flex justify-center">
