@@ -8,6 +8,7 @@ import { Toaster as SonnerToaster } from '@/components/ui/sonner'
 import Index from '@/pages/Index'
 import NotFound from '@/pages/NotFound'
 import Home from '@/components/Home'
+import AuthPage from '@/pages/AuthPage'
 import InsightsPage from '@/pages/mentor/InsightsPage'
 import LeaderboardPage from '@/pages/mentor/LeaderboardPage'
 import ActivityLogPage from '@/pages/mentor/ActivityLogPage'
@@ -25,6 +26,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/authpage" element={<AuthPage />} />
             <Route path="/dashboard" element={<Index />} />
             <Route path="/trees" element={<TreesListPage />} />
             <Route path="/insights" element={<InsightsPage />} />
