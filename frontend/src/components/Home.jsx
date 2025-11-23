@@ -1,16 +1,17 @@
 import React from 'react';
-import { TreePine, Award, Globe, Sprout, Wrench, Link, Trophy } from 'lucide-react';
+import { TreePine, Award, Globe, Sprout, Wrench, Link as LucideLink, Trophy } from 'lucide-react';
 import HeroImg from '../assets/heroimage.jpg';
 import PlantingImg from '../assets/img1.jpg';
 import VerificationImg from '../assets/img2.jpg';
 import RewardsImg from '../assets/img3.jpg';
 import Logo from '../assets/logo.jpg';
+import { Link } from 'react-router-dom';
 
 export default function App() {
   return (
-       <div className="w-full min-h-screen bg-black">
+    <div className="w-full min-h-screen bg-black">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 bg-[#6DA704] px-12 py-4 flex justify-between items-center z-50">
+      <header className="fixed top-0 left-0 right-0 bg-[#6DA704] px-6 md:px-12 py-4 flex justify-between items-center z-50">
         <div className="flex items-center gap-2">
           <img src={Logo} alt="EcoKuza Logo" className="h-8 w-8" />
           <div className="text-[#3D4F22] text-xl font-medium">
@@ -24,10 +25,23 @@ export default function App() {
           <a href="#mission" className="text-white uppercase text-sm hover:text-black transition">Mission</a>
           <a href="#impact" className="text-white uppercase text-sm hover:text-black transition">Impact</a>
 
-          <button className="border-2 border-white text-white px-6 py-2 text-xs uppercase tracking-wide hover:bg-white hover:text-[#7ab800] transition">
+          <Link
+            to="/dashboard"
+            className="border-2 border-white text-white px-6 py-2 text-xs uppercase tracking-wide hover:bg-white hover:text-[#7ab800] transition"
+          >
             Register Your Club
-          </button>
+          </Link>
         </nav>
+
+        {/* Mobile Register button */}
+        <div className="md:hidden">
+          <Link
+            to="/dashboard"
+            className="border-2 border-white text-white px-4 py-1.5 text-xs uppercase tracking-wide hover:bg-white hover:text-[#7ab800] transition rounded"
+          >
+            Register
+          </Link>
+        </div>
       </header>
 
       {/* HERO SECTION */}
