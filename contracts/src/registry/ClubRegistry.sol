@@ -5,7 +5,7 @@ import "../utils/Structs.sol";
 import "../utils/IClubEvents.sol";
 
 /// @title ClubRegistry - Manages 4K Club registration and data
-contract ClubRegistry {
+contract ClubRegistry is IClubEvents {
     
     address public owner;
     

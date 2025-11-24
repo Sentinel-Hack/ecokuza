@@ -3,10 +3,6 @@ require("hardhat-gas-reporter");
 require("dotenv").config();
 
 module.exports = {
-  paths: {
-    sources: "./src",
-  },
-  defaultNetwork: "hardhat",
   solidity: {
     version: "0.8.20",
     settings: {

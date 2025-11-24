@@ -9,9 +9,9 @@ contract PointsEngine {
     address public owner;
     
     // Points configuration
-    mapping(ActivityType => uint256) public basePoints;
+    mapping(Structs.ActivityType => uint256) public basePoints;
     mapping(string => uint256) public speciesMultiplier; // species -> multiplier (percentage)
-    mapping(ActivityType => uint256) public verificationBonus;
+    mapping(Structs.ActivityType => uint256) public verificationBonus;
     
     // Season tracking
     uint256 public currentSeason;
@@ -36,10 +36,10 @@ contract PointsEngine {
         currentSeason = 1;
         
         // Initialize base points
-        basePoints[ActivityType.Planting] = 10;
-        basePoints[ActivityType.GrowthCheck] = 5;
-        basePoints[ActivityType.Cleanup] = 3;
-        basePoints[ActivityType.BiodiversityLog] = 4;
+        basePoints[Structs.ActivityType.Planting] = 10;
+        basePoints[Structs.ActivityType.GrowthCheck] = 5;
+        basePoints[Structs.ActivityType.Cleanup] = 3;
+        basePoints[Structs.ActivityType.BiodiversityLog] = 4;
         
         // Initialize species multipliers (100 = 1x, 150 = 1.5x)
         speciesMultiplier["Native"] = 150;
@@ -47,13 +47,13 @@ contract PointsEngine {
         speciesMultiplier["Mixed"] = 100;
         
         // Initialize verification bonuses
-        verificationBonus[ActivityType.Planting] = 5;
-        verificationBonus[ActivityType.GrowthCheck] = 3;
+        verificationBonus[Structs.ActivityType.Planting] = 5;
+        verificationBonus[Structs.ActivityType.GrowthCheck] = 3;
     }
 
     /// @notice Calculate points for an activity
     function calculatePoints(
-        ActivityType _activityType,
+        Structs.ActivityType _activityType,
         uint32 _count,
         string calldata _species
     ) external view returns (uint256) {
@@ -67,7 +67,7 @@ contract PointsEngine {
     }
 
     /// @notice Calculate verification bonus points
-    function calculateVerificationBonus(ActivityType _activityType, uint32 _count) 
+    function calculateVerificationBonus(Structs.ActivityType _activityType, uint32 _count) 
         external 
         view 
         returns (uint256) 
@@ -101,7 +101,7 @@ contract PointsEngine {
     }
 
     /// @notice Update base points for an activity type
-    function updateBasePoints(ActivityType _activityType, uint256 _newPoints) external onlyOwner {
+    function updateBasePoints(Structs.ActivityType _activityType, uint256 _newPoints) external onlyOwner {
         basePoints[_activityType] = _newPoints;
     }
 
