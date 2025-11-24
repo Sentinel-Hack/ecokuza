@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AuthImg2 from '../assets/authimage2.svg';
+import { ENDPOINTS, apiCall } from '@/lib/api';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +13,7 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const API_BASE_URL = 'http://127.0.0.1:8000/authentification';
+  // Use centralized endpoints from src/lib/api.js
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -29,29 +30,22 @@ const LoginPage = () => {
     setSuccess('');
 
     try {
-      const endpoint = `${API_BASE_URL}/signin/`;
       const payload = {
         email: formData.email,
         password: formData.password,
-        remember_me: formData.rememberMe
+        remember_me: formData.rememberMe,
       };
 
-      const response = await fetch(endpoint, {
+      const data = await apiCall(ENDPOINTS.AUTH_SIGNIN, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem('access_token', data.access);
-        localStorage.setItem('refresh_token', data.refresh);
-        setSuccess('Sign in successful! Redirecting...');
-        setTimeout(() => { window.location.href = '/dashboard'; }, 1000);
-      } else {
-        setError(data.error || 'An error occurred. Try again.');
-      }
+      // backend returns access & refresh
+      if (data.access) localStorage.setItem('access_token', data.access);
+      if (data.refresh) localStorage.setItem('refresh_token', data.refresh);
+      setSuccess('Sign in successful! Redirecting...');
+      setTimeout(() => { window.location.href = '/dashboard'; }, 1000);
     } catch (err) {
       setError('Network error. Check your connection.');
     } finally {

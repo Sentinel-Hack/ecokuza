@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AuthImg from '../assets/authimage.png';
+import { ENDPOINTS, apiCall } from '@/lib/api';
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +14,7 @@ const SignupPage = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const API_BASE_URL = 'http://127.0.0.1:8000/authentification';
+  // Use centralized endpoints from src/lib/api.js
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -36,27 +37,19 @@ const SignupPage = () => {
         return;
       }
 
-      const endpoint = `${API_BASE_URL}/signup/`;
       const payload = {
         first_name: formData.firstName,
         email: formData.email,
-        password: formData.password
+        password: formData.password,
       };
 
-      const response = await fetch(endpoint, {
+      await apiCall(ENDPOINTS.AUTH_SIGNUP, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccess('Registration successful! Please verify your email.');
-        setTimeout(() => { window.location.href = '/login'; }, 2000);
-      } else {
-        setError(data.error || 'An error occurred. Try again.');
-      }
+      setSuccess('Registration successful! Please verify your email.');
+      setTimeout(() => { window.location.href = '/login'; }, 2000);
     } catch (err) {
       setError('Network error. Check your connection.');
     } finally {
