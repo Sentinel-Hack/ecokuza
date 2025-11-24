@@ -9,7 +9,7 @@ from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
 
-# Load environment variables from a .env file if exists
+# Load environment variables from .env if exists
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,11 +22,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-&%(y6n(f)$9*sc^o&gq&^qx^3#
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Allowed hosts
-ALLOWED_HOSTS = [
-    'ecokuza.onrender.com',  # Your Render domain
-    'localhost',
-    '127.0.0.1',
-]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'ecokuza.onrender.com,localhost,127.0.0.1').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -83,15 +79,8 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
+    'accept', 'accept-encoding', 'authorization', 'content-type',
+    'dnt', 'origin', 'user-agent', 'x-csrftoken', 'x-requested-with',
 ]
 
 MIDDLEWARE = [
@@ -127,7 +116,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ecokuza.wsgi.application'
 
 # Database
-# For production, consider PostgreSQL. Default: SQLite
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.sqlite3'),
@@ -169,8 +157,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Frontend URL (for email links)
 FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:5173')
 
-# Production security settings (optional, uncomment in production)
-"""
+# Security settings (for production)
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
@@ -180,7 +167,6 @@ X_FRAME_OPTIONS = 'DENY'
 SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
-"""
 
 # Logging
 LOGGING = {
