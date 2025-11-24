@@ -1,0 +1,468 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "D:\\Projects\\Ecokuza2\\ecokuza\\contracts\\src\\core\\Activities.sol": {
+      "lastModificationDate": 1764014536346,
+      "contentHash": "11b7fb644119ec8e20b68b3800022b66",
+      "sourceName": "src/core/Activities.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Structs.sol",
+        "../utils/IClubEvents.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Activities"
+      ]
+    },
+    "D:\\Projects\\Ecokuza2\\ecokuza\\contracts\\src\\utils\\Structs.sol": {
+      "lastModificationDate": 1764014580197,
+      "contentHash": "e29a28caab74ab0b115f8d727085edbd",
+      "sourceName": "src/utils/Structs.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Structs"
+      ]
+    },
+    "D:\\Projects\\Ecokuza2\\ecokuza\\contracts\\src\\utils\\IClubEvents.sol": {
+      "lastModificationDate": 1764014580193,
+      "contentHash": "210f64d055e156f26258a4901426231e",
+      "sourceName": "src/utils/IClubEvents.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Structs.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IClubEvents"
+      ]
+    },
+    "D:\\Projects\\Ecokuza2\\ecokuza\\contracts\\src\\registry\\ClubRegistry.sol": {
+      "lastModificationDate": 1764014708150,
+      "contentHash": "1ee0a2e11919a0477dfdfea51be0af0d",
+      "sourceName": "src/registry/ClubRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Structs.sol",
+        "../utils/IClubEvents.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ClubRegistry"
+      ]
+    },
+    "D:\\Projects\\Ecokuza2\\ecokuza\\contracts\\src\\core\\SentinelClubs.sol": {
+      "lastModificationDate": 1764014791045,
+      "contentHash": "1cdefb20326e3dcad4b98747862e16f2",
+      "sourceName": "src/core/SentinelClubs.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../registry/ClubRegistry.sol",
+        "../utils/Structs.sol",
+        "../utils/IClubEvents.sol",
+        "../interfaces/IPointsEngine.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "SentinelClubs"
+      ]
+    },
+    "D:\\Projects\\Ecokuza2\\ecokuza\\contracts\\src\\interfaces\\IPointsEngine.sol": {
+      "lastModificationDate": 1764014591264,
+      "contentHash": "72839feca1b325bf6ed69bfe5bc25a14",
+      "sourceName": "src/interfaces/IPointsEngine.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Structs.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IPointsEngine"
+      ]
+    },
+    "D:\\Projects\\Ecokuza2\\ecokuza\\contracts\\src\\interfaces\\ISentinelClubs.sol": {
+      "lastModificationDate": 1764014591268,
+      "contentHash": "2b7491eee1a45ab6765bc36aef511e2b",
+      "sourceName": "src/interfaces/ISentinelClubs.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Structs.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ISentinelClubs"
+      ]
+    },
+    "D:\\Projects\\Ecokuza2\\ecokuza\\contracts\\src\\core\\PointsEngine.sol": {
+      "lastModificationDate": 1764014679977,
+      "contentHash": "727ff47ed516fed0d646480491d60dc4",
+      "sourceName": "src/core/PointsEngine.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Structs.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "PointsEngine"
+      ]
+    },
+    "D:\\Projects\\Ecokuza2\\ecokuza\\contracts\\src\\interfaces\\IActivityEvents.sol": {
+      "lastModificationDate": 1764014591262,
+      "contentHash": "ed0008971c6d98557c5eb08c0a45f51a",
+      "sourceName": "src/interfaces/IActivityEvents.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IActivityEvents"
+      ]
+    },
+    "D:\\Projects\\Ecokuza2\\ecokuza\\contracts\\src\\interfaces\\IVerifierRegistry.sol": {
+      "lastModificationDate": 1764014591273,
+      "contentHash": "aceb121b4cd3c3ce11dadc0fffebbb12",
+      "sourceName": "src/interfaces/IVerifierRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IVerifierRegistry"
+      ]
+    },
+    "D:\\Projects\\Ecokuza2\\ecokuza\\contracts\\src\\registry\\VerifierRegistry.sol": {
+      "lastModificationDate": 1764014615849,
+      "contentHash": "bf4229cdc55e2bcb8e989f6453e0b832",
+      "sourceName": "src/registry/VerifierRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "VerifierRegistry"
+      ]
+    },
+    "D:\\Projects\\Ecokuza2\\ecokuza\\contracts\\src\\utils\\SafeTransfer.sol": {
+      "lastModificationDate": 1764014580196,
+      "contentHash": "a5257737ff150cbfc7870f3bfabaf874",
+      "sourceName": "src/utils/SafeTransfer.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "SafeTransfer"
+      ]
+    }
+  }
+}

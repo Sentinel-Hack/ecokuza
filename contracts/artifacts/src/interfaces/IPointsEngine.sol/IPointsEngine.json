@@ -1,0 +1,111 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IPointsEngine",
+  "sourceName": "src/interfaces/IPointsEngine.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "enum Structs.ActivityType",
+          "name": "_activityType",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint32",
+          "name": "_count",
+          "type": "uint32"
+        },
+        {
+          "internalType": "string",
+          "name": "_species",
+          "type": "string"
+        }
+      ],
+      "name": "calculatePoints",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "enum Structs.ActivityType",
+          "name": "_activityType",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint32",
+          "name": "_count",
+          "type": "uint32"
+        }
+      ],
+      "name": "calculateVerificationBonus",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_seasonId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_limit",
+          "type": "uint256"
+        }
+      ],
+      "name": "getSeasonLeaderboard",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_clubId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_points",
+          "type": "uint256"
+        }
+      ],
+      "name": "recordSeasonPoints",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
