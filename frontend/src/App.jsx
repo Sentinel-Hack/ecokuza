@@ -14,6 +14,8 @@ import LeaderboardPage from '@/pages/mentor/LeaderboardPage'
 import ActivityLogPage from '@/pages/mentor/ActivityLogPage'
 import ResourcesPage from '@/pages/mentor/ResourcesPage'
 import TreesListPage from '@/pages/mentor/TreesListPage'
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
 
 const queryClient = new QueryClient()
 
@@ -27,6 +29,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/authpage" element={<AuthPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
             <Route path="/dashboard" element={<Index />} />
             <Route path="/trees" element={<TreesListPage />} />
             <Route path="/insights" element={<InsightsPage />} />
