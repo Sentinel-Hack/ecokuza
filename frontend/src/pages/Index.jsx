@@ -75,7 +75,7 @@ export default function Index() {
         {/* Quick Actions */}
         <div className="flex flex-col sm:flex-row gap-3">
           <Button asChild className="flex-1 h-12 gap-2">
-            <Link to="/trees?action=record">
+            <Link to="/record">
               <Plus className="w-5 h-5" />
               Record Tree Update
             </Link>

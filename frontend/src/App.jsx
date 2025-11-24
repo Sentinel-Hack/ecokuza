@@ -13,6 +13,7 @@ import LeaderboardPage from '@/pages/mentor/LeaderboardPage'
 import ActivityLogPage from '@/pages/mentor/ActivityLogPage'
 import ResourcesPage from '@/pages/mentor/ResourcesPage'
 import TreesListPage from '@/pages/mentor/TreesListPage'
+import RecordTreePage from '@/pages/mentor/RecordTreePage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 
@@ -30,6 +31,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/dashboard" element={<Index />} />
+            <Route path="/record" element={<RecordTreePage />} />
             <Route path="/trees" element={<TreesListPage />} />
             <Route path="/insights" element={<InsightsPage />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />

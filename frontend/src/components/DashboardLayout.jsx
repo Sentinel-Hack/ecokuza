@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Home, Plus, TreeDeciduous, Lightbulb, Trophy, List, BookOpen, Bell, User, Menu, X } from "lucide-react";
+import { Home, Plus, TreeDeciduous, Lightbulb, Trophy, List, BookOpen, Bell, User, Menu, X, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -18,6 +19,15 @@ const navItems = [
 
 export function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear user data from localStorage
+    localStorage.removeItem("user");
+    localStorage.removeItem("authToken");
+    // Redirect to login page
+    navigate("/login");
+  };
 
   return (
     <div className="flex min-h-screen w-full bg-background">
@@ -85,6 +95,19 @@ export function DashboardLayout({ children }) {
             </ul>
           </nav>
 
+          <div className="border-t border-border p-2">
+            <Button
+              variant="ghost"
+              className={cn(
+                "w-full justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-50",
+                !sidebarOpen && "lg:justify-center lg:px-3",
+              )}
+              onClick={handleLogout}
+            >
+              <LogOut className="w-6 h-6 flex-shrink-0" />
+              {sidebarOpen && <span>Logout</span>}
+            </Button>
+          </div>
         </div>
       </aside>
 
