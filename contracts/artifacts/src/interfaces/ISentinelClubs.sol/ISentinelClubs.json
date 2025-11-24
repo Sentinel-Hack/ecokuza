@@ -1,0 +1,175 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ISentinelClubs",
+  "sourceName": "src/interfaces/ISentinelClubs.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_clubId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getClubActivities",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "clubId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "enum Structs.ActivityType",
+              "name": "activityType",
+              "type": "uint8"
+            },
+            {
+              "internalType": "string",
+              "name": "species",
+              "type": "string"
+            },
+            {
+              "internalType": "uint32",
+              "name": "count",
+              "type": "uint32"
+            },
+            {
+              "internalType": "string",
+              "name": "locationCode",
+              "type": "string"
+            },
+            {
+              "internalType": "uint64",
+              "name": "timestamp",
+              "type": "uint64"
+            },
+            {
+              "internalType": "string",
+              "name": "metadataURI",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "pointsAwarded",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "verified",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Structs.Activity[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_locationCode",
+          "type": "string"
+        }
+      ],
+      "name": "getLocationStats",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "totalTrees",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalActivities",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lastActivity",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Structs.LocationStats",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint8",
+          "name": "_activityType",
+          "type": "uint8"
+        },
+        {
+          "internalType": "string",
+          "name": "_species",
+          "type": "string"
+        },
+        {
+          "internalType": "uint32",
+          "name": "_count",
+          "type": "uint32"
+        },
+        {
+          "internalType": "string",
+          "name": "_locationCode",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_metadataURI",
+          "type": "string"
+        }
+      ],
+      "name": "recordActivity",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_activityId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "_verified",
+          "type": "bool"
+        }
+      ],
+      "name": "verifyActivity",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

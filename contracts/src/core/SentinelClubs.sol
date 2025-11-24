@@ -8,7 +8,7 @@ import "../interfaces/IPointsEngine.sol";
 
 /// @title SentinelClubs - Main contract for 4K Club activities and tracking
 /// @notice Handles club activities, tree planting, growth monitoring, and points system
-contract SentinelClubs is ClubRegistry, IClubEvents {
+contract SentinelClubs is ClubRegistry {
     
     IPointsEngine public pointsEngine;
     
