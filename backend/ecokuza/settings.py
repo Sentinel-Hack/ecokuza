@@ -70,6 +70,7 @@ SIMPLE_JWT = {
 
 # CORS Settings
 CORS_ALLOWED_ORIGINS = [
+    "https://ecokuza-teal.vercel.app",
     "http://localhost:5173",
     "http://localhost:5174",
     "http://127.0.0.1:8000",
@@ -154,19 +155,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Email Configuration (development console backend)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Frontend URL (for email links)
-FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:5173')
+# Frontend URL (for email links / CORS)
+FRONTEND_URL = os.getenv(
+    'FRONTEND_URL',
+    'http://localhost:5173' if DEBUG else 'https://ecokuza-teal.vercel.app'
+)
 
-# Security settings (for production)
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+# Production security settings (only enforced if not DEBUG)
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 # Logging
 LOGGING = {
