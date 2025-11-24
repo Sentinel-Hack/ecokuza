@@ -211,6 +211,58 @@ Sentinel is a comprehensive platform designed to monitor and incentivize forest 
    ALCHEMY_API_KEY=your-alchemy-api-key
    ```
 
+
+
+## 🌐 Network Configuration
+
+### Supported Networks
+- **Polygon zkEVM Testnet (Cardona)**: `polygonZkEVMTestnet`
+- **Polygon zkEVM Mainnet**: `polygonZkEVM`
+- **Scroll Testnet**: `scrollSepolia`
+- **zkSync Era Testnet**: `zksyncTestnet`
+
+### Network URLs
+- **Polygon zkEVM Testnet RPC**: `https://rpc.cardona.zkevm-rpc.com`
+- **Polygon zkEVM Mainnet RPC**: `https://zkevm-rpc.com`
+- **Explorer**: [Polygon zkEVM Explorer](https://zkevm.polygonscan.com)
+
+## 📚 Documentation
+
+### Contract Addresses
+
+```env
+NEXT_PUBLIC_POINTS_ENGINE_ADDRESS=0xfaCC6C825F79D534af3cC9F611511258466290a3
+NEXT_PUBLIC_CLUB_REGISTRY_ADDRESS=0xd7600dE536139605E6541db5d0908862981E157f
+NEXT_PUBLIC_VERIFIER_REGISTRY_ADDRESS=0x65806FF71b11b1FCDfaB8ca741b7A7575b666437
+NEXT_PUBLIC_SENTINEL_CLUBS_ADDRESS=0xb84622f542DC1071A074CA32E5Cc0F3DDE9aF2eF
+```
+
+### Contract ABIs
+ABIs are available in the `artifacts/` directory after compilation.
+
+## 🤝 Contributing
+
+### Code Style
+- Follow Solidity Style Guide
+- Use NatSpec for documentation
+- Write comprehensive tests
+
+### Workflow
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+- Inspired by the Green Belt Movement
+- Built for the Wangari Maathai Hackathon
+- Special thanks to all contributors and supporters
+
+
 ## 💻 Development
 
 ### Smart Contracts
@@ -343,52 +395,3 @@ For questions or support, please contact:
 <div align="center">
   Made with ❤️ by the Ecokuza Team
 </div>
-
-## 🌐 Network Configuration
-
-### Supported Networks
-- **Polygon zkEVM Testnet (Cardona)**: `polygonZkEVMTestnet`
-- **Polygon zkEVM Mainnet**: `polygonZkEVM`
-- **Scroll Testnet**: `scrollSepolia`
-- **zkSync Era Testnet**: `zksyncTestnet`
-
-### Network URLs
-- **Polygon zkEVM Testnet RPC**: `https://rpc.cardona.zkevm-rpc.com`
-- **Polygon zkEVM Mainnet RPC**: `https://zkevm-rpc.com`
-- **Explorer**: [Polygon zkEVM Explorer](https://zkevm.polygonscan.com)
-
-## 📚 Documentation
-
-### Contract Addresses
-
-```env
-NEXT_PUBLIC_POINTS_ENGINE_ADDRESS=0xfaCC6C825F79D534af3cC9F611511258466290a3
-NEXT_PUBLIC_CLUB_REGISTRY_ADDRESS=0xd7600dE536139605E6541db5d0908862981E157f
-NEXT_PUBLIC_VERIFIER_REGISTRY_ADDRESS=0x65806FF71b11b1FCDfaB8ca741b7A7575b666437
-NEXT_PUBLIC_SENTINEL_CLUBS_ADDRESS=0xb84622f542DC1071A074CA32E5Cc0F3DDE9aF2eF
-```
-
-### Contract ABIs
-ABIs are available in the `artifacts/` directory after compilation.
-
-## 🤝 Contributing
-
-### Code Style
-- Follow Solidity Style Guide
-- Use NatSpec for documentation
-- Write comprehensive tests
-
-### Workflow
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-- Inspired by the Green Belt Movement
-- Built for the Wangari Maathai Hackathon
-- Special thanks to all contributors and supporters
