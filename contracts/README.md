@@ -49,8 +49,8 @@ Manages verifiers who can validate activities.
 Create a `.env` file with the following variables:
 ```
 PRIVATE_KEY=your_private_key
-POLYGON_ZKEVM_RPC_URL=your_polygon_zkevm_rpc_url
-POLYGON_ZKEVM_API_KEY=your_polygon_zkevm_scan_api_key
+SCROLL_TESTNET_RPC_URL=https://sepolia-rpc.scroll.io
+SCROLLSCAN_API_KEY=your_scrollscan_api_key
 ```
 
 ### Deployment Commands
@@ -65,15 +65,31 @@ npm install
 npx hardhat compile
 ```
 
-3. Deploy to Polygon zkEVM Testnet (Cardona):
+3. Deploy to Scroll Sepolia Testnet:
 ```bash
-npx hardhat run scripts/deploy-zkevm.js --network polygonZkEVMTestnet
+npx hardhat run scripts/deploy.js --network scrollSepolia
 ```
 
 4. Verify contracts:
 ```bash
-npx hardhat verify --network polygonZkEVMTestnet DEPLOYED_CONTRACT_ADDRESS "Constructor Argument 1"
+npx hardhat verify --network scrollSepolia DEPLOYED_CONTRACT_ADDRESS "Constructor Argument 1"
 ```
+
+### Deployed Contracts (Scroll Sepolia Testnet)
+
+| Contract | Address |
+|----------|---------|
+| PointsEngine | [0xfaCC6C825F79D534af3cC9F611511258466290a3](https://sepolia.scrollscan.com/address/0xfaCC6C825F79D534af3cC9F611511258466290a3) |
+| ClubRegistry | [0xd7600dE536139605E6541db5d0908862981E157f](https://sepolia.scrollscan.com/address/0xd7600dE536139605E6541db5d0908862981E157f) |
+| VerifierRegistry | [0x65806FF71b11b1FCDfaB8ca741b7A7575b666437](https://sepolia.scrollscan.com/address/0x65806FF71b11b1FCDfaB8ca741b7A7575b666437) |
+| SentinelClubs | [0xb84622f542DC1071A074CA32E5Cc0F3DDE9aF2eF](https://sepolia.scrollscan.com/address/0xb84622f542DC1071A074CA32E5Cc0F3DDE9aF2eF) |
+
+#### Sample Data Initialized
+- Deployer added as a verifier
+- 3 sample clubs registered:
+  1. Green Future Club (Nairobi Primary School)
+  2. Eco Warriors (Mombasa Secondary School)
+  3. Tree Guardians (Kisumu Academy)
 
 ## Testing
 
