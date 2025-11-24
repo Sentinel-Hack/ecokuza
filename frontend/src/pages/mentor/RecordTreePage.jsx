@@ -1,20 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useTrees } from '@/hooks/useApi';
-import { toast } from '@/components/ui/use-toast';
 import { ArrowLeft } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 
 const SPECIES_OPTIONS = [
   { value: 'oak', label: 'Oak' },
@@ -26,7 +14,6 @@ const SPECIES_OPTIONS = [
 
 export default function RecordTreePage() {
   const navigate = useNavigate();
-  const { recordTree } = useTrees();
   const [formData, setFormData] = useState({
     species: '',
     datePlanted: new Date().toISOString().split('T')[0],
@@ -47,53 +34,21 @@ export default function RecordTreePage() {
     }));
   };
 
-  const handleSelectChange = (name, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleLocationClick = (e) => {
-    // This would be connected to a map click event
-    // For now, we'll use placeholder coordinates
-    const latitude = e.latLng?.lat() || 0;
-    const longitude = e.latLng?.lng() || 0;
-    
-    setFormData(prev => ({
-      ...prev,
-      latitude,
-      longitude,
-      location: `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}`
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.species || !formData.location) {
-      toast({
-        title: 'Error',
-        description: 'Please fill in all required fields',
-        variant: 'destructive',
-      });
+      alert('Please fill in all required fields');
       return;
     }
 
     setIsSubmitting(true);
     try {
-      await recordTree(formData);
-      toast({
-        title: 'Success',
-        description: 'Tree recorded successfully!',
-      });
+      console.log('Tree data:', formData);
+      alert('Tree recorded successfully!');
       navigate('/trees');
     } catch (error) {
       console.error('Error recording tree:', error);
-      toast({
-        title: 'Error',
-        description: error.message || 'Failed to record tree',
-        variant: 'destructive',
-      });
+      alert('Failed to record tree');
     } finally {
       setIsSubmitting(false);
     }
@@ -122,29 +77,26 @@ export default function RecordTreePage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="species">Species *</Label>
-              <Select 
+              <label className="text-sm font-medium text-gray-700">Species *</label>
+              <select
+                name="species"
                 value={formData.species}
-                onValueChange={(value) => handleSelectChange('species', value)}
+                onChange={handleChange}
                 required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select species" />
-                </SelectTrigger>
-                <SelectContent>
-                  {SPECIES_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                <option value="">Select species</option>
+                {SPECIES_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="datePlanted">Planting Date *</Label>
+              <label className="text-sm font-medium text-gray-700">Planting Date *</label>
               <Input
-                id="datePlanted"
                 name="datePlanted"
                 type="date"
                 value={formData.datePlanted}
@@ -154,38 +106,19 @@ export default function RecordTreePage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="location">Location *</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="location"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  placeholder="Click on the map to set location"
-                  required
-                  readOnly
-                  className="flex-1"
-                />
-                <Button 
-                  type="button" 
-                  variant="outline"
-                  onClick={() => {
-                    // This would open a map modal in a real implementation
-                    toast({
-                      title: 'Map',
-                      description: 'Map integration will be implemented here',
-                    });
-                  }}
-                >
-                  Set on Map
-                </Button>
-              </div>
+              <label className="text-sm font-medium text-gray-700">Location *</label>
+              <Input
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                placeholder="Enter location or coordinates"
+                required
+              />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="height">Height (meters)</Label>
+              <label className="text-sm font-medium text-gray-700">Height (meters)</label>
               <Input
-                id="height"
                 name="height"
                 type="number"
                 step="0.1"
@@ -197,33 +130,30 @@ export default function RecordTreePage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="health">Health Status</Label>
-              <Select 
+              <label className="text-sm font-medium text-gray-700">Health Status</label>
+              <select
+                name="health"
                 value={formData.health}
-                onValueChange={(value) => handleSelectChange('health', value)}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select health status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="excellent">Excellent</SelectItem>
-                  <SelectItem value="good">Good</SelectItem>
-                  <SelectItem value="fair">Fair</SelectItem>
-                  <SelectItem value="poor">Poor</SelectItem>
-                </SelectContent>
-              </Select>
+                <option value="excellent">Excellent</option>
+                <option value="good">Good</option>
+                <option value="fair">Fair</option>
+                <option value="poor">Poor</option>
+              </select>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="notes">Additional Notes</Label>
-            <Textarea
-              id="notes"
+            <label className="text-sm font-medium text-gray-700">Additional Notes</label>
+            <textarea
               name="notes"
               value={formData.notes}
               onChange={handleChange}
               placeholder="Any additional information about the tree..."
               rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
