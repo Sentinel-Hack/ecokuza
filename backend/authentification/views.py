@@ -53,14 +53,12 @@ def sign_in(request):
     if not remember_me:
         refresh.set_exp(lifetime=timedelta(days=1))
     
+    user_serializer = UserSerializer(user)
+    
     return Response({
         'access': str(refresh.access_token),
         'refresh': str(refresh),
-        'user': {
-            'id': user.id,
-            'email': user.email,
-            'first_name': user.first_name,
-        }
+        'user': user_serializer.data
     }, status=status.HTTP_200_OK)
 
 
@@ -82,13 +80,11 @@ def sign_up(request):
         except Exception as e:
             print(f"Failed to send verification email: {e}")
         
+        user_serializer = UserSerializer(user)
+        
         return Response({
             'message': 'Registration successful! Please check your email to verify your account.',
-            'user': {
-                'id': user.id,
-                'email': user.email,
-                'first_name': user.first_name,
-            }
+            'user': user_serializer.data
         }, status=status.HTTP_201_CREATED)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

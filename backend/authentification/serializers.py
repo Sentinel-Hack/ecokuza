@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from .models import PointsLog
 
 User = get_user_model()
 
@@ -23,4 +24,15 @@ class UserSignUpSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'is_email_verified')
+        fields = ('id', 'email', 'first_name', 'is_email_verified', 'points')
+
+
+class PointsLogSerializer(serializers.ModelSerializer):
+    user_email = serializers.CharField(source='user.email', read_only=True)
+    points_type_display = serializers.CharField(source='get_points_type_display', read_only=True)
+    tree_species = serializers.CharField(source='tree_record.species', read_only=True, allow_null=True)
+    
+    class Meta:
+        model = PointsLog
+        fields = ('id', 'user', 'user_email', 'points', 'points_type', 'points_type_display', 'description', 'tree_record', 'tree_species', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'user', 'user_email', 'created_at', 'updated_at')

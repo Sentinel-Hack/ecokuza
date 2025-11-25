@@ -198,6 +198,17 @@ class TreeRecord(models.Model):
     
     def save(self, *args, **kwargs):
         """Override save to extract EXIF data and analyze authenticity before saving."""
+        # Check if verification status changed
+        is_new_verification = False
+        if self.pk:
+            try:
+                old_instance = TreeRecord.objects.get(pk=self.pk)
+                # If verification changed from False to True, award points
+                if not old_instance.verified and self.verified:
+                    is_new_verification = True
+            except TreeRecord.DoesNotExist:
+                pass
+        
         if self.photo and not self.photo_datetime:
             # Only extract if EXIF data hasn't been extracted yet
             self.extract_exif_data()
@@ -207,6 +218,34 @@ class TreeRecord(models.Model):
             self.analyze_authenticity()
         
         super().save(*args, **kwargs)
+        
+        # Award points after save if newly verified
+        if is_new_verification:
+            self.award_verification_points()
+    
+    def award_verification_points(self):
+        """Award points to user when their tree record is verified."""
+        try:
+            from authentification.models import PointsLog
+            
+            # Points formula: base 100 + authenticity bonus
+            base_points = 100
+            authenticity_bonus = self.authenticity_score  # 0-100
+            total_points = base_points + authenticity_bonus
+            
+            # Create points log entry
+            PointsLog.objects.create(
+                user=self.user,
+                points=total_points,
+                points_type='tree_verified',
+                description=f"Tree record verified: {self.species} - Authenticity score: {self.authenticity_score}",
+                tree_record=self
+            )
+            
+            print(f"✓ Awarded {total_points} points to {self.user.email} for tree verification")
+            
+        except Exception as e:
+            print(f"Error awarding points: {e}")
     
     def analyze_authenticity(self):
         """Analyze image authenticity using Groq AI."""
