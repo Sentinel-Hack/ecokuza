@@ -115,21 +115,35 @@ export function DashboardLayout({ children }) {
       </aside>
 
       <div className="flex-1 flex flex-col w-full lg:w-auto">
-        <header className="sticky top-0 z-30 h-16 bg-card border-b border-border flex items-center px-4 lg:hidden">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSidebarOpen(true)}
-          >
-            <Menu className="w-6 h-6" />
-          </Button>
-          <div className="ml-3 flex items-center gap-2">
-            <img 
-              src="/ecokuza_logo.png" 
-              alt="Ecokuza Logo" 
-              className="w-6 h-6 rounded-full"
-            />
-            <span className="font-medium text-lg">Ecokuza</span>
+        <header className="sticky top-0 z-30 h-16 bg-card border-b border-border flex items-center justify-between px-4">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(true)}
+              className="lg:hidden"
+            >
+              <Menu className="w-6 h-6" />
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/notifications")}
+              className="relative"
+            >
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/profile")}
+            >
+              <User className="w-5 h-5" />
+            </Button>
           </div>
         </header>
 

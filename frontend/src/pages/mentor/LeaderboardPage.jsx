@@ -14,41 +14,54 @@ export default function LeaderboardPage() {
   const [userRank, setUserRank] = useState(null);
   const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState(10);
+  const [division, setDivision] = useState('county'); // 'county' or 'national'
   const { toast } = useToast();
 
   useEffect(() => {
     fetchLeaderboards();
-  }, [limit]);
+  }, [limit, division]);
 
   const fetchLeaderboards = async () => {
     try {
       setLoading(true);
 
       // Fetch all-time leaderboard
-      const allTimeRes = await apiCall(`${ENDPOINTS.LEADERBOARD}?limit=${limit}`, {
+      const allTimeRes = await apiCall(`${ENDPOINTS.LEADERBOARD}?limit=${limit}&division=${division}`, {
         method: 'GET',
       });
       if (allTimeRes.ok) {
         const data = await allTimeRes.json();
         setAllTimeLeaderboard(data.leaderboard || []);
+      } else {
+        // fallthrough to later dummy handling
       }
 
       // Fetch weekly leaderboard
-      const weeklyRes = await apiCall(`${ENDPOINTS.LEADERBOARD}/weekly?limit=${limit}`, {
+      const weeklyRes = await apiCall(`${ENDPOINTS.LEADERBOARD}/weekly?limit=${limit}&division=${division}`, {
         method: 'GET',
       });
       if (weeklyRes.ok) {
         const data = await weeklyRes.json();
         setWeeklyLeaderboard(data.leaderboard || []);
+      } else {
+        // fallthrough to later dummy handling
       }
 
       // Fetch user rank
-      const userRes = await apiCall(`${ENDPOINTS.LEADERBOARD}/me/`, {
+      const userRes = await apiCall(`${ENDPOINTS.LEADERBOARD}/me/?division=${division}`, {
         method: 'GET',
       });
       if (userRes.ok) {
         const data = await userRes.json();
         setUserRank(data);
+      }
+      
+      // If leaderboards are empty (or API returned non-ok), generate dummy data so UI always shows something
+      if (!allTimeRes.ok || !weeklyRes.ok) {
+        const dummyAll = generateDummyLeaderboard(division, limit, false);
+        const dummyWeekly = generateDummyLeaderboard(division, limit, true);
+        setAllTimeLeaderboard(dummyAll);
+        setWeeklyLeaderboard(dummyWeekly);
       }
     } catch (error) {
       console.error('Error fetching leaderboards:', error);
@@ -60,6 +73,33 @@ export default function LeaderboardPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Generate dummy leaderboard entries for county or national divisions
+  const generateDummyLeaderboard = (divisionName, limitNum = 10, isWeekly = false) => {
+    const baseNames = divisionName === 'county'
+      ? ['Green Valley School', 'Riverbend Primary', 'Hilltop Academy', 'Sunrise School', 'Maple Grove']
+      : ['National Green League', 'Countrywide Trees', 'Nationwide Growers', 'Green Nation Club', 'Tree Champions'];
+
+    const entries = Array.from({ length: limitNum }).map((_, i) => {
+      const rank = i + 1;
+      const name = baseNames[i % baseNames.length] + (divisionName === 'county' ? ` (${getRandomCounty()})` : '');
+      return {
+        id: `${divisionName}-${rank}`,
+        rank,
+        first_name: name,
+        email: `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-') }@example.org`,
+        tree_count: Math.floor(Math.max(1, (limitNum - i) * (isWeekly ? 2 : 5) + Math.random() * 10)),
+        points: Math.floor((limitNum - i) * 100 + Math.random() * 200),
+        weekly_points: Math.floor((limitNum - i) * 10 + Math.random() * 50),
+      };
+    });
+    return entries;
+  };
+
+  const getRandomCounty = () => {
+    const counties = ['Nairobi', 'Kisumu', 'Mombasa', 'Nakuru', 'Kiambu'];
+    return counties[Math.floor(Math.random() * counties.length)];
   };
 
   const handleRefresh = () => {
@@ -191,6 +231,14 @@ export default function LeaderboardPage() {
         )}
 
         {/* Leaderboard Tabs */}
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <Badge variant={division === 'county' ? 'default' : 'secondary'} onClick={() => setDivision('county')} className="cursor-pointer">County</Badge>
+            <Badge variant={division === 'national' ? 'default' : 'secondary'} onClick={() => setDivision('national')} className="cursor-pointer">National</Badge>
+          </div>
+          <div className="text-sm text-muted-foreground">Showing: <span className="font-semibold capitalize">{division}</span></div>
+        </div>
+
         <Tabs defaultValue="alltime" className="space-y-4">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="alltime" className="flex items-center gap-2">

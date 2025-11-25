@@ -264,7 +264,25 @@ export default function RecordTreePage() {
           body: payload,
         });
 
-        console.log('Tree record response:', res);
+        // Try to parse created tree from response. If API returns the created
+        // tree object, append it to `treesList` so the Update dropdown shows it
+        // immediately without requiring a remount or re-fetch.
+        let createdTree = null;
+        try {
+          // apiCall returns the fetch Response when successful
+          createdTree = await res.json();
+        } catch (err) {
+          // ignore parse errors — we'll fallback to a re-fetch if needed later
+          createdTree = null;
+        }
+        if (createdTree && createdTree.id) {
+          setTreesList(prev => {
+            // avoid duplicates if already present
+            const exists = (prev || []).some(t => String(t.id) === String(createdTree.id));
+            if (exists) return prev;
+            return [createdTree, ...(prev || [])];
+          });
+        }
         toast({
           title: 'Success',
           description: 'Tree update recorded!',
@@ -458,21 +476,25 @@ export default function RecordTreePage() {
             {/* Select Tree */}
             <div className="mb-6">
               <label className="block text-sm font-semibold text-gray-700 mb-2">Select Tree *</label>
-              <input
-                type="text"
-                name="tree_search"
-                placeholder="Search by tree id or name..."
-                onChange={(e) => setUpdateForm(prev => ({ ...prev, tree: e.target.value }))}
-                list="trees-list"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+              <select
+                name="tree"
+                value={updateForm.tree}
+                onChange={handleUpdateInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none bg-white cursor-pointer"
                 required
-              />
-              <datalist id="trees-list">
-                {treesList.map(t => (
-                  <option key={t.id} value={t.id}>{t.name || t.species || `#${t.id}`}</option>
-                ))}
-              </datalist>
-              <p className="text-xs text-gray-500 mt-1">You can paste the Tree ID or choose from the list.</p>
+              >
+                <option value="">-- Select a tree from your club --</option>
+                {treesList.length > 0 ? (
+                  treesList.map(t => (
+                    <option key={t.id} value={t.id}>
+                      {t.name || t.species || `Tree #${t.id}`}
+                    </option>
+                  ))
+                ) : (
+                  <option disabled>No trees available</option>
+                )}
+              </select>
+              <p className="text-xs text-gray-500 mt-2">Select the tree you want to update from your 4K Club's tree list.</p>
             </div>
 
             {/* Date */}

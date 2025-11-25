@@ -23,4 +23,8 @@ urlpatterns = [
     path('certifications/', views.list_certifications, name='list_certifications'),
     path('certifications/my-certifications/', views.my_certifications, name='my_certifications'),
     path('certifications/check-new/', views.check_new_certifications, name='check_new_certifications'),
+    
+    # Student management endpoints
+    path('students/', views.list_create_students, name='list_create_students'),
+    path('students/<int:student_id>/', views.update_delete_student, name='update_delete_student'),
 ]

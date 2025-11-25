@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { SummaryCard } from "@/components/SummaryCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TreeDeciduous, Droplets, Sun, Users, TrendingUp, Plus, ArrowRight, Lightbulb, Trophy, List, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
+import AIChatModal from '@/components/AIChatModal';
 
 const summaryData = [
   { title: "Total Trees", value: "247", icon: TreeDeciduous, trend: { value: "12%", positive: true } },
@@ -15,6 +16,13 @@ const summaryData = [
 ];
 
 const dashboardSections = [
+  {
+    title: "Record Tree",
+    description: "Add a new tree or update tree progress",
+    icon: Plus,
+    path: "/record",
+    buttonText: "Record Now",
+  },
   {
     title: "Trees List",
     description: "View and manage all trees in your 4K Club",
@@ -53,6 +61,7 @@ const dashboardSections = [
 ];
 
 export default function Index() {
+  const [chatOpen, setChatOpen] = useState(false);
   return (
     <DashboardLayout>
       <div className="p-4 space-y-6 max-w-7xl mx-auto">
@@ -63,21 +72,24 @@ export default function Index() {
           </p>
         </div>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        {/* Summary Cards: mobile horizontal swipe + desktop grid */}
+        {/* Mobile: horizontal swipeable list */}
+        <div
+          className="flex space-x-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 sm:hidden"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
           {summaryData.map((data, index) => (
-            <SummaryCard key={index} {...data} />
+            <div key={index} className="snap-start flex-shrink-0 w-[85%]">
+              <SummaryCard {...data} />
+            </div>
           ))}
         </div>
 
-        {/* Quick Actions */}
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Button asChild size="lg" className="flex-1">
-            <Link to="/record" className="flex items-center justify-center gap-2">
-              <Plus className="w-5 h-5" />
-              Record Tree Update
-            </Link>
-          </Button>
+        {/* Desktop / larger screens: grid */}
+        <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {summaryData.map((data, index) => (
+            <SummaryCard key={index} {...data} />
+          ))}
         </div>
 
         {/* Dashboard Sections */}
@@ -109,6 +121,18 @@ export default function Index() {
           ))}
         </div>
       </div>
+      {/* Floating AI chat button */}
+      <button
+        onClick={() => setChatOpen(true)}
+        aria-label="Open AI chat"
+        className="fixed right-6 bottom-6 z-50 bg-green-600 hover:bg-green-700 text-white p-3 rounded-full shadow-lg flex items-center justify-center"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h6m-9 8v-2a4 4 0 014-4h6" />
+        </svg>
+      </button>
+
+      <AIChatModal open={chatOpen} onClose={() => setChatOpen(false)} />
     </DashboardLayout>
   );
 }

@@ -35,6 +35,8 @@ export const ENDPOINTS = {
   NOTIFICATIONS: `${API_BASE}/authentification/notifications/`,
   LEADERBOARD: `${API_BASE}/authentification/leaderboard/`,
   CERTIFICATIONS: `${API_BASE}/authentification/certifications/`,
+  AI_CHAT: `${API_BASE}/authentification/ai/chat/`,
+  STUDENTS: `${API_BASE}/authentification/students/`,
 };
 
 export async function apiCall(url, options = {}) {

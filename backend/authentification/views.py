@@ -466,3 +466,107 @@ def check_new_certifications(request):
     }, status=status.HTTP_200_OK)
 
 
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def list_create_students(request):
+    """
+    GET: List all users (students) - mentor views their club members
+    POST: Create a new student/user (admin/mentor invitation)
+    Expected payload: { "email": "...", "first_name": "...", "password": "..." }
+    """
+    if request.method == 'GET':
+        # Return all users (students)
+        users = User.objects.all().values('id', 'email', 'first_name', 'username', 'is_active', 'date_joined')
+        return Response({
+            'students': list(users),
+            'total': users.count()
+        }, status=status.HTTP_200_OK)
+    
+    elif request.method == 'POST':
+        # Create new student
+        email = request.data.get('email', '').strip()
+        first_name = request.data.get('first_name', '').strip()
+        password = request.data.get('password', '').strip()
+        
+        if not email or not first_name or not password:
+            return Response(
+                {'error': 'email, first_name, and password are required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if User.objects.filter(email=email).exists():
+            return Response(
+                {'error': 'User with this email already exists'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            user = User.objects.create_user(
+                email=email,
+                username=email,  # Use email as username
+                first_name=first_name,
+                password=password
+            )
+            return Response({
+                'id': user.id,
+                'email': user.email,
+                'first_name': user.first_name,
+                'message': 'Student created successfully'
+            }, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+@api_view(['PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def update_delete_student(request, student_id):
+    """
+    PUT: Update a student (email, first_name)
+    DELETE: Delete a student
+    """
+    try:
+        student = User.objects.get(id=student_id)
+    except User.DoesNotExist:
+        return Response(
+            {'error': 'Student not found'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+    
+    if request.method == 'PUT':
+        email = request.data.get('email', '').strip()
+        first_name = request.data.get('first_name', '').strip()
+        
+        if not email or not first_name:
+            return Response(
+                {'error': 'email and first_name are required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Check if email is unique (excluding current user)
+        if User.objects.filter(email=email).exclude(id=student_id).exists():
+            return Response(
+                {'error': 'User with this email already exists'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        student.email = email
+        student.first_name = first_name
+        student.save()
+        
+        return Response({
+            'id': student.id,
+            'email': student.email,
+            'first_name': student.first_name,
+            'message': 'Student updated successfully'
+        }, status=status.HTTP_200_OK)
+    
+    elif request.method == 'DELETE':
+        student_email = student.email
+        student.delete()
+        
+        return Response({
+            'message': f'Student {student_email} deleted successfully'
+        }, status=status.HTTP_200_OK)
