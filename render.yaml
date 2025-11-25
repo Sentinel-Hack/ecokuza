@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: ecokuza-backend
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: cd backend && bash build.sh
+    startCommand: cd backend && gunicorn ecokuza.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: ecokuza.onrender.com,localhost,127.0.0.1
