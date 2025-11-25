@@ -78,6 +78,10 @@ export default function RecordTreePage() {
     }
   };
 
+  const isMobileDevice = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
@@ -165,36 +169,43 @@ export default function RecordTreePage() {
                 Tree Photo *
               </label>
               <div>
-                {!photoPreview ? (
-                  <label className="flex items-center justify-center gap-2 px-4 py-8 border-2 border-dashed border-green-400 rounded-md cursor-pointer hover:border-green-500 hover:bg-green-50 transition-colors bg-green-50">
-                    <Camera className="w-6 h-6 text-green-600" />
-                    <span className="text-green-700 font-medium">Take Photo</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      capture="environment"
-                      onChange={handlePhotoCapture}
-                      className="hidden"
-                      required={!formData.photo}
-                    />
-                  </label>
+                {isMobileDevice() ? (
+                  !photoPreview ? (
+                    <label className="flex items-center justify-center gap-2 px-4 py-8 border-2 border-dashed border-green-400 rounded-md cursor-pointer hover:border-green-500 hover:bg-green-50 transition-colors bg-green-50">
+                      <Camera className="w-6 h-6 text-green-600" />
+                      <span className="text-green-700 font-medium">Take Photo</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        onChange={handlePhotoCapture}
+                        className="hidden"
+                        required={!formData.photo}
+                      />
+                    </label>
+                  ) : (
+                    <div>
+                      <img
+                        src={photoPreview}
+                        alt="Tree preview"
+                        className="w-full h-48 object-cover rounded-md border-2 border-green-300"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPhotoPreview(null);
+                          setFormData(prev => ({ ...prev, photo: null }));
+                        }}
+                        className="mt-3 w-full px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 font-medium rounded-md transition-colors"
+                      >
+                        Retake Photo
+                      </button>
+                    </div>
+                  )
                 ) : (
-                  <div>
-                    <img
-                      src={photoPreview}
-                      alt="Tree preview"
-                      className="w-full h-48 object-cover rounded-md border-2 border-green-300"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPhotoPreview(null);
-                        setFormData(prev => ({ ...prev, photo: null }));
-                      }}
-                      className="mt-3 w-full px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 font-medium rounded-md transition-colors"
-                    >
-                      Retake Photo
-                    </button>
+                  <div className="flex items-center justify-center gap-2 px-4 py-8 border-2 border-dashed border-gray-300 rounded-md bg-gray-50">
+                    <Camera className="w-6 h-6 text-gray-400" />
+                    <span className="text-gray-600 font-medium">Camera available on mobile only</span>
                   </div>
                 )}
               </div>
