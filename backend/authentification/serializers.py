@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-from .models import PointsLog
+from .models import PointsLog, Notification
 
 User = get_user_model()
 
@@ -27,6 +27,16 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'first_name', 'is_email_verified', 'points')
 
 
+class NotificationSerializer(serializers.ModelSerializer):
+    sender_email = serializers.CharField(source='sender.email', read_only=True, allow_null=True)
+    tree_species = serializers.CharField(source='tree_record.species', read_only=True, allow_null=True)
+    
+    class Meta:
+        model = Notification
+        fields = ('id', 'notification_type', 'title', 'message', 'sender', 'sender_email', 'tree_record', 'tree_species', 'points_awarded', 'is_read', 'created_at', 'read_at')
+        read_only_fields = ('id', 'sender_email', 'tree_species', 'created_at', 'read_at')
+
+
 class PointsLogSerializer(serializers.ModelSerializer):
     user_email = serializers.CharField(source='user.email', read_only=True)
     points_type_display = serializers.CharField(source='get_points_type_display', read_only=True)
@@ -36,3 +46,22 @@ class PointsLogSerializer(serializers.ModelSerializer):
         model = PointsLog
         fields = ('id', 'user', 'user_email', 'points', 'points_type', 'points_type_display', 'description', 'tree_record', 'tree_species', 'created_at', 'updated_at')
         read_only_fields = ('id', 'user', 'user_email', 'created_at', 'updated_at')
+
+
+class LeaderboardSerializer(serializers.ModelSerializer):
+    """Serializer for leaderboard entries (ranking users by points)."""
+    rank = serializers.SerializerMethodField()
+    tree_count = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'first_name', 'points', 'rank', 'tree_count')
+    
+    def get_rank(self, obj):
+        """Get user's rank in leaderboard (computed at query time)."""
+        return getattr(obj, 'rank', None)
+    
+    def get_tree_count(self, obj):
+        """Count verified trees for this user."""
+        return obj.tree_records.filter(verified=True).count()
+

@@ -32,6 +32,8 @@ export const ENDPOINTS = {
   AUTH_SIGNIN: `${API_BASE}/authentification/signin/`,
   AUTH_SIGNUP: `${API_BASE}/authentification/signup/`,
   TREES_RECORDS: `${API_BASE}/trees/records/`,
+  NOTIFICATIONS: `${API_BASE}/authentification/notifications/`,
+  LEADERBOARD: `${API_BASE}/authentification/leaderboard/`,
 };
 
 export async function apiCall(url, options = {}) {
@@ -43,7 +45,7 @@ export async function apiCall(url, options = {}) {
 
   // Attach JWT token only for authenticated endpoints
   // Don't attach for login/signup which are public endpoints
-  const publicEndpoints = ['/signin/', '/signup/', '/forgot-password/', '/reset-password/'];
+  const publicEndpoints = ['/signin/', '/signup/', '/forgot-password/', '/reset-password/', '/leaderboard/'];
   const isPublicEndpoint = publicEndpoints.some(ep => url.includes(ep));
   
   const access = localStorage.getItem('access_token');
@@ -68,7 +70,7 @@ export async function apiCall(url, options = {}) {
       throw err;
     }
 
-    return payload;
+    return res;
   } catch (err) {
     console.error(`API call failed to ${url}:`, err);
     throw err;

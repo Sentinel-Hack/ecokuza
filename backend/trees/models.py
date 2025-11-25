@@ -224,9 +224,9 @@ class TreeRecord(models.Model):
             self.award_verification_points()
     
     def award_verification_points(self):
-        """Award points to user when their tree record is verified."""
+        """Award points to user when their tree record is verified and notify tutors."""
         try:
-            from authentification.models import PointsLog
+            from authentification.models import PointsLog, Notification
             
             # Points formula: base 100 + authenticity bonus
             base_points = 100
@@ -234,7 +234,7 @@ class TreeRecord(models.Model):
             total_points = base_points + authenticity_bonus
             
             # Create points log entry
-            PointsLog.objects.create(
+            points_log = PointsLog.objects.create(
                 user=self.user,
                 points=total_points,
                 points_type='tree_verified',
@@ -243,6 +243,27 @@ class TreeRecord(models.Model):
             )
             
             print(f"✓ Awarded {total_points} points to {self.user.email} for tree verification")
+            
+            # Create notification for tutors/mentors
+            # Find all tutors who manage this user (if any relationship exists)
+            # For now, notify all tutors/admin users
+            from django.contrib.auth import get_user_model
+            User = get_user_model()
+            
+            tutors = User.objects.filter(is_staff=True)  # Simplified: all staff are tutors
+            
+            for tutor in tutors:
+                Notification.objects.create(
+                    recipient=tutor,
+                    sender=self.user,
+                    notification_type='tree_verified',
+                    title=f'Tree Record Verified',
+                    message=f'{self.user.first_name or self.user.email} earned {total_points} points for verifying a {self.species} tree record',
+                    tree_record=self,
+                    points_awarded=total_points
+                )
+            
+            print(f"✓ Created notifications for {tutors.count()} tutors")
             
         except Exception as e:
             print(f"Error awarding points: {e}")

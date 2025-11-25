@@ -10,6 +10,7 @@ import NotFound from '@/pages/NotFound'
 import Home from '@/components/Home'
 import InsightsPage from '@/pages/mentor/InsightsPage'
 import LeaderboardPage from '@/pages/mentor/LeaderboardPage'
+import NotificationsPage from '@/pages/mentor/NotificationsPage'
 import ActivityLogPage from '@/pages/mentor/ActivityLogPage'
 import ResourcesPage from '@/pages/mentor/ResourcesPage'
 import TreesListPage from '@/pages/mentor/TreesListPage'
@@ -35,6 +36,7 @@ function App() {
             <Route path="/trees" element={<TreesListPage />} />
             <Route path="/insights" element={<InsightsPage />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
             <Route path="/activity" element={<ActivityLogPage />} />
             <Route path="/resources" element={<ResourcesPage />} />
             <Route path="*" element={<NotFound />} />
