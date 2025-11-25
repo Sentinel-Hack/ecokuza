@@ -18,4 +18,9 @@ urlpatterns = [
     path('leaderboard/', views.leaderboard, name='leaderboard'),
     path('leaderboard/weekly/', views.leaderboard_weekly, name='leaderboard_weekly'),
     path('leaderboard/me/', views.user_leaderboard_rank, name='user_rank'),
+    
+    # Certification endpoints
+    path('certifications/', views.list_certifications, name='list_certifications'),
+    path('certifications/my-certifications/', views.my_certifications, name='my_certifications'),
+    path('certifications/check-new/', views.check_new_certifications, name='check_new_certifications'),
 ]

@@ -34,6 +34,7 @@ export const ENDPOINTS = {
   TREES_RECORDS: `${API_BASE}/trees/records/`,
   NOTIFICATIONS: `${API_BASE}/authentification/notifications/`,
   LEADERBOARD: `${API_BASE}/authentification/leaderboard/`,
+  CERTIFICATIONS: `${API_BASE}/authentification/certifications/`,
 };
 
 export async function apiCall(url, options = {}) {

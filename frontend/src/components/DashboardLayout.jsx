@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Home, Plus, TreeDeciduous, Lightbulb, Trophy, List, BookOpen, Bell, User, Menu, X, LogOut } from "lucide-react";
+import { Home, Plus, TreeDeciduous, Lightbulb, Trophy, List, BookOpen, Bell, User, Menu, X, LogOut, Award } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ const navItems = [
   { title: "Trees List", icon: TreeDeciduous, path: "/trees" },
   { title: "AI Insights", icon: Lightbulb, path: "/insights" },
   { title: "Leaderboard", icon: Trophy, path: "/leaderboard" },
+  { title: "Certifications", icon: Award, path: "/certifications" },
   { title: "Activity Log", icon: List, path: "/activity" },
   { title: "Resources", icon: BookOpen, path: "/resources" },
   { title: "Notifications", icon: Bell, path: "/notifications" },

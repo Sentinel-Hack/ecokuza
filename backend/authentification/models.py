@@ -50,6 +50,29 @@ class PointsLog(models.Model):
         user = self.user
         user.points = user.points_logs.aggregate(models.Sum('points'))['points__sum'] or 0
         user.save(update_fields=['points'])
+        
+        # Check if user qualifies for any new certifications
+        from .models import Certification, UserCertification, Notification
+        already_earned = UserCertification.objects.filter(user=user).values_list('certification_id', flat=True)
+        
+        for cert in Certification.objects.exclude(id__in=already_earned):
+            if cert.user_qualifies(user):
+                # Award the certification
+                UserCertification.objects.create(
+                    user=user,
+                    certification=cert,
+                    points_at_earning=user.points
+                )
+                
+                # Create a notification
+                Notification.objects.create(
+                    recipient=user,
+                    sender=None,
+                    notification_type='milestone',
+                    title=f'🎉 New Certification Earned!',
+                    message=f'Congratulations! You earned the "{cert.name}" certification!',
+                    points_awarded=0
+                )
 
 
 class Notification(models.Model):
@@ -101,4 +124,74 @@ class Notification(models.Model):
             self.is_read = True
             self.read_at = timezone.now()
             self.save(update_fields=['is_read', 'read_at'])
+
+
+class Certification(models.Model):
+    """Certification/Badge that can be earned by users based on milestones."""
+    
+    CERTIFICATION_LEVELS = [
+        ('bronze', 'Bronze'),
+        ('silver', 'Silver'),
+        ('gold', 'Gold'),
+        ('platinum', 'Platinum'),
+    ]
+    
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField()
+    icon = models.CharField(max_length=50, default='award', help_text="Icon name for frontend (lucide-react)")
+    level = models.CharField(max_length=20, choices=CERTIFICATION_LEVELS, default='bronze')
+    
+    # Requirements to earn this certification
+    required_points = models.IntegerField(default=0, help_text="Minimum points needed")
+    required_trees = models.IntegerField(default=0, help_text="Minimum verified trees needed")
+    required_verification_rate = models.FloatField(default=0.0, help_text="Minimum verification rate (0-100%)")
+    
+    # Metadata
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['level', '-required_points']
+    
+    def __str__(self):
+        return f"{self.name} ({self.get_level_display()})"
+    
+    def user_qualifies(self, user):
+        """Check if user meets all requirements for this certification."""
+        if user.points < self.required_points:
+            return False
+        
+        verified_trees = user.tree_records.filter(verified=True).count()
+        if verified_trees < self.required_trees:
+            return False
+        
+        total_trees = user.tree_records.count()
+        if total_trees > 0:
+            verification_rate = (verified_trees / total_trees) * 100
+            if verification_rate < self.required_verification_rate:
+                return False
+        elif self.required_verification_rate > 0:
+            return False
+        
+        return True
+
+
+class UserCertification(models.Model):
+    """Track which certifications have been awarded to which users."""
+    
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='certifications')
+    certification = models.ForeignKey(Certification, on_delete=models.CASCADE, related_name='awarded_to')
+    
+    # When it was earned
+    earned_at = models.DateTimeField(auto_now_add=True)
+    
+    # Optional: points at time of earning (for reference)
+    points_at_earning = models.IntegerField(null=True, blank=True)
+    
+    class Meta:
+        unique_together = ('user', 'certification')
+        ordering = ['-earned_at']
+    
+    def __str__(self):
+        return f"{self.user.email} earned {self.certification.name}"
 

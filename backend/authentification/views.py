@@ -13,8 +13,8 @@ from django.contrib.auth import get_user_model
 from django.db.models import Count, F, Window, Q, Sum
 from django.db.models.functions import DenseRank
 from datetime import timedelta, datetime, timezone
-from .serializers import UserSignUpSerializer, UserSerializer, NotificationSerializer, LeaderboardSerializer
-from .models import Notification, PointsLog
+from .serializers import UserSignUpSerializer, UserSerializer, NotificationSerializer, LeaderboardSerializer, CertificationSerializer, UserCertificationSerializer
+from .models import Notification, PointsLog, Certification, UserCertification
 
 User = get_user_model()
 
@@ -405,3 +405,64 @@ def user_leaderboard_rank(request):
         'tree_records_total': total_count,
         'percentage_verified': (verified_count / total_count * 100) if total_count > 0 else 0
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def list_certifications(request):
+    """Get all available certifications"""
+    certifications = Certification.objects.all()
+    serializer = CertificationSerializer(certifications, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def my_certifications(request):
+    """Get authenticated user's earned certifications"""
+    user = request.user
+    user_certs = UserCertification.objects.filter(user=user)
+    serializer = UserCertificationSerializer(user_certs, many=True)
+    
+    return Response({
+        'earned_certifications': serializer.data,
+        'total_earned': user_certs.count(),
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_new_certifications(request):
+    """Check if user qualifies for any new certifications and award them"""
+    user = request.user
+    already_earned = UserCertification.objects.filter(user=user).values_list('certification_id', flat=True)
+    
+    newly_earned = []
+    
+    for cert in Certification.objects.exclude(id__in=already_earned):
+        if cert.user_qualifies(user):
+            # Award the certification
+            user_cert = UserCertification.objects.create(
+                user=user,
+                certification=cert,
+                points_at_earning=user.points
+            )
+            newly_earned.append(cert)
+            
+            # Create a notification for the user
+            Notification.objects.create(
+                recipient=user,
+                sender=None,
+                notification_type='milestone',
+                title=f'🎉 New Certification Earned!',
+                message=f'Congratulations! You earned the "{cert.name}" certification!',
+                points_awarded=0
+            )
+    
+    return Response({
+        'newly_earned': CertificationSerializer(newly_earned, many=True).data,
+        'total_earned': UserCertification.objects.filter(user=user).count(),
+        'message': f'Earned {len(newly_earned)} new certification(s)!' if newly_earned else 'No new certifications earned yet'
+    }, status=status.HTTP_200_OK)
+
+

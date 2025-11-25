@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-from .models import PointsLog, Notification
+from .models import PointsLog, Notification, Certification, UserCertification
 
 User = get_user_model()
 
@@ -64,4 +64,25 @@ class LeaderboardSerializer(serializers.ModelSerializer):
     def get_tree_count(self, obj):
         """Count verified trees for this user."""
         return obj.tree_records.filter(verified=True).count()
+
+
+class CertificationSerializer(serializers.ModelSerializer):
+    """Serializer for available certifications."""
+    level_display = serializers.CharField(source='get_level_display', read_only=True)
+    
+    class Meta:
+        model = Certification
+        fields = ('id', 'name', 'description', 'icon', 'level', 'level_display', 'required_points', 'required_trees', 'required_verification_rate')
+
+
+class UserCertificationSerializer(serializers.ModelSerializer):
+    """Serializer for earned certifications."""
+    certification = CertificationSerializer(read_only=True)
+    certification_id = serializers.IntegerField(write_only=True, required=False)
+    
+    class Meta:
+        model = UserCertification
+        fields = ('id', 'certification', 'certification_id', 'earned_at', 'points_at_earning')
+        read_only_fields = ('id', 'earned_at', 'points_at_earning')
+
 
