@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, X, Camera } from 'lucide-react';
 import { ENDPOINTS, apiCall } from '../../lib/api';
@@ -43,6 +43,97 @@ export default function RecordTreePage() {
   });
   const [photoPreview, setPhotoPreview] = useState(null);
 
+  // Update-progress form state (hooks must be top-level)
+  const [treesList, setTreesList] = useState([]);
+  const [updateForm, setUpdateForm] = useState({
+    tree: '',
+    date: new Date().toISOString().slice(0, 10),
+    photo: null,
+    height: '',
+    health_notes: '',
+    latitude: null,
+    longitude: null
+  });
+  const [photoPreviewUpdate, setPhotoPreviewUpdate] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await apiCall(ENDPOINTS.TREES_LIST || '/api/trees/');
+        if (mounted && res && Array.isArray(res.results ? res.results : res)) {
+          setTreesList(res.results || res);
+        }
+      } catch (err) {
+        // non-fatal: trees list may not be available
+        console.warn('Could not fetch trees list', err);
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
+
+  const handleUpdateInputChange = (e) => {
+    const { name, value } = e.target;
+    setUpdateForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleUpdatePhoto = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUpdateForm(prev => ({ ...prev, photo: file }));
+      const reader = new FileReader();
+      reader.onloadend = () => setPhotoPreviewUpdate(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const captureGPS = () => new Promise((resolve) => {
+    if (!navigator.geolocation) return resolve(null);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve(pos),
+      () => resolve(null),
+      { timeout: 7000 }
+    );
+  });
+
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!updateForm.tree) {
+      return alert('Please select a tree to update');
+    }
+    if (!updateForm.photo) {
+      return alert('Please add a photo (required)');
+    }
+
+    try {
+      const pos = await captureGPS();
+      const payload = new FormData();
+      payload.append('record_type', 'update');
+      payload.append('tree_id', updateForm.tree);
+      payload.append('date', updateForm.date);
+      payload.append('height', updateForm.height || '');
+      payload.append('health_notes', updateForm.health_notes || '');
+      payload.append('photo', updateForm.photo);
+      if (pos && pos.coords) {
+        payload.append('latitude', pos.coords.latitude);
+        payload.append('longitude', pos.coords.longitude);
+      }
+
+      await apiCall(ENDPOINTS.TREES_RECORDS, {
+        method: 'POST',
+        body: payload,
+      });
+
+      toast({ title: 'Success', description: 'Tree progress updated', duration: 3000 });
+      setSelectedOption(null);
+      navigate('/mentor/dashboard');
+    } catch (err) {
+      console.error('Update failed', err);
+      toast({ title: 'Error', description: err?.payload?.detail || 'Failed to update tree', duration: 4000 });
+    }
+  };
+
   const handlePlantNewTree = async () => {
     if (isMobileDevice()) {
       const gpsEnabled = await requestGPS();
@@ -54,7 +145,13 @@ export default function RecordTreePage() {
   };
 
   const handleUpdateProgress = () => {
-    setSelectedOption('update');
+    (async () => {
+      if (isMobileDevice()) {
+        const gpsEnabled = await requestGPS();
+        if (!gpsEnabled) return;
+      }
+      setSelectedOption('update');
+    })();
   };
 
   const handleCancel = () => {
@@ -329,36 +426,107 @@ export default function RecordTreePage() {
     );
   }
 
-  // Show map for update option
+  // Show update form when selected
   if (selectedOption === 'update') {
     return (
-      <div className="flex flex-col h-screen bg-background">
-        <div className="flex items-center gap-3 p-4 border-b bg-background">
+      <div className="flex flex-col h-screen bg-gray-50">
+        <div className="flex items-center gap-3 p-4 border-b bg-white">
           <button onClick={handleCancel} className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-md transition-colors">
             <ArrowLeft className="w-4 h-4" />
             Back
           </button>
-          <div>
-            <h1 className="text-xl font-bold">Update Tree Progress</h1>
-            <p className="text-sm text-muted-foreground">Click on the map to record location</p>
-          </div>
+          <h1 className="text-xl font-bold">Update Tree Progress</h1>
         </div>
 
-        <div className="flex-1 overflow-hidden">
-          <iframe
-            title="ArcGIS Tree Recording Map"
-            src="https://arcg.is/191rL50"
-            className="w-full h-full border-0"
-            allow="geolocation"
-          />
-        </div>
-        <div className="fixed right-4 bottom-4">
-          <button
-            onClick={() => window.open('https://arcg.is/191rL50', '_blank')}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
-          >
-            Open map in new tab
-          </button>
+        <div className="flex-1 overflow-y-auto">
+          <form onSubmit={handleUpdateSubmit} className="p-6 max-w-2xl mx-auto">
+            {/* Select Tree */}
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Select Tree *</label>
+              <input
+                type="text"
+                name="tree_search"
+                placeholder="Search by tree id or name..."
+                onChange={(e) => setUpdateForm(prev => ({ ...prev, tree: e.target.value }))}
+                list="trees-list"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+                required
+              />
+              <datalist id="trees-list">
+                {treesList.map(t => (
+                  <option key={t.id} value={t.id}>{t.name || t.species || `#${t.id}`}</option>
+                ))}
+              </datalist>
+              <p className="text-xs text-gray-500 mt-1">You can paste the Tree ID or choose from the list.</p>
+            </div>
+
+            {/* Date */}
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Date of Update</label>
+              <input
+                type="date"
+                name="date"
+                value={updateForm.date}
+                onChange={handleUpdateInputChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
+              />
+            </div>
+
+            {/* Photo */}
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Photo *</label>
+              <div>
+                {isMobileDevice() ? (
+                  !photoPreviewUpdate ? (
+                    <label className="flex items-center justify-center gap-2 px-4 py-8 border-2 border-dashed border-green-400 rounded-md cursor-pointer hover:border-green-500 hover:bg-green-50 transition-colors bg-green-50">
+                      <Camera className="w-6 h-6 text-green-600" />
+                      <span className="text-green-700 font-medium">Take Photo</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        onChange={handleUpdatePhoto}
+                        className="hidden"
+                        required
+                      />
+                    </label>
+                  ) : (
+                    <div>
+                      <img src={photoPreviewUpdate} alt="Tree preview" className="w-full h-48 object-cover rounded-md border-2 border-green-300" />
+                      <button type="button" onClick={() => { setPhotoPreviewUpdate(null); setUpdateForm(prev => ({ ...prev, photo: null })); }} className="mt-3 w-full px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 font-medium rounded-md transition-colors">Retake Photo</button>
+                    </div>
+                  )
+                ) : (
+                  <div className="flex items-center justify-center gap-2 px-4 py-8 border-2 border-dashed border-gray-300 rounded-md bg-gray-50">
+                    <Camera className="w-6 h-6 text-gray-400" />
+                    <span className="text-gray-600 font-medium">Camera available on mobile only</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Height / Growth */}
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Tree Height / Growth (cm)</label>
+              <input type="number" name="height" value={updateForm.height} onChange={handleUpdateInputChange} placeholder="e.g., 120" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none" />
+            </div>
+
+            {/* Health condition / notes */}
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Health Condition / Notes (Optional)</label>
+              <textarea name="health_notes" value={updateForm.health_notes} onChange={handleUpdateInputChange} rows="4" placeholder="e.g., pests observed, watering, sunlight, soil condition" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none resize-none" />
+            </div>
+
+            {/* GPS capture note */}
+            <div className="mb-6 text-sm text-gray-600">
+              GPS location will be attempted automatically when you submit. It is optional and only saved if permission is granted.
+            </div>
+
+            <div className="flex gap-3">
+              <button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-semibold transition-colors">Save Update</button>
+              <button type="button" onClick={handleCancel} className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 rounded-md font-semibold transition-colors">Cancel</button>
+            </div>
+          </form>
         </div>
       </div>
     );
