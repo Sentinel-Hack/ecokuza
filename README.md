@@ -811,23 +811,7 @@ Found a bug? Please open an issue with:
 
 ## 🎥 Video Demo
 
-### [INSERT VIDEO DEMO HERE]
-
-**Demo Link:** [Add YouTube/Vimeo link]
-
-This 5-10 minute demo shows:
-- ✅ User registration and authentication
-- ✅ Planting a new tree with GPS and photo
-- ✅ AI verification process in real-time
-- ✅ Admin verification workflow
-- ✅ Points and certification earning
-- ✅ Blockchain data confirmation
-- ✅ Leaderboard and achievement views
-
-**To add your video:**
-1. Record a demo (desktop screen + camera preferred)
-2. Upload to YouTube or Vimeo
-3. Add the link here: `[LINK TEXT](URL)`
+### https://youtu.be/2hbzHiwgviE
 
 ---
 
