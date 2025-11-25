@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, X, Camera } from 'lucide-react';
 import { ENDPOINTS, apiCall } from '../../lib/api';
+import { useToast } from '../../hooks/use-toast';
 
 const TREE_SPECIES = [
   'Acacia',
@@ -31,6 +32,7 @@ const TREE_TYPES = [
 
 export default function RecordTreePage() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [selectedOption, setSelectedOption] = useState(null);
   const [formData, setFormData] = useState({
     species: '',
@@ -151,13 +153,22 @@ export default function RecordTreePage() {
         });
 
         console.log('Tree record response:', res);
-        alert('Tree record saved successfully');
+        toast({
+          title: 'Success',
+          description: 'Tree update recorded!',
+          duration: 3000,
+        });
         setSelectedOption(null);
         setFormData({ species: '', type: '', location: '', photo: null, notes: '' });
         setPhotoPreview(null);
+        navigate('/mentor/dashboard');
       } catch (err) {
         console.error('Failed to save tree record', err);
-        alert(err?.payload?.detail || err.message || 'Failed to save tree record');
+        toast({
+          title: 'Error',
+          description: err?.payload?.detail || err.message || 'Failed to save tree record',
+          duration: 4000,
+        });
       }
     })();
   };
