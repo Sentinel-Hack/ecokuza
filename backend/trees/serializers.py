@@ -29,7 +29,35 @@ class TreeRecordSerializer(serializers.ModelSerializer):
             'photo_datetime_digitized',
             'photo_datetime',
             'notes',
+            # Authenticity & Verification fields
+            'authenticity_score',
+            'is_authentic_image',
+            'ai_tree_type',
+            'health_assessment',
+            'image_quality',
+            'gps_validation',
+            'ai_analysis',
+            'ai_confidence',
+            'verified',
             'created_at',
             'updated_at',
         ]
-        read_only_fields = ['id', 'user', 'user_email', 'created_at', 'updated_at', 'photo_datetime_original', 'photo_datetime_digitized', 'photo_datetime']
+        read_only_fields = [
+            'id',
+            'user',
+            'user_email',
+            'created_at',
+            'updated_at',
+            'photo_datetime_original',
+            'photo_datetime_digitized',
+            'photo_datetime',
+            # AI analysis fields are read-only (auto-generated)
+            'authenticity_score',
+            'is_authentic_image',
+            'ai_tree_type',
+            'health_assessment',
+            'image_quality',
+            'gps_validation',
+            'ai_analysis',
+            'ai_confidence',
+        ]

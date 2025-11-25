@@ -54,6 +54,17 @@ class TreeRecord(models.Model):
     # Additional info
     notes = models.TextField(blank=True)
     
+    # AI Authenticity & Verification (Groq AI)
+    authenticity_score = models.IntegerField(default=0, help_text="0-100: Authenticity score from AI analysis")
+    is_authentic_image = models.BooleanField(default=True, help_text="Is the image authentic (not AI-generated/edited)?")
+    ai_tree_type = models.CharField(max_length=255, blank=True, null=True, help_text="Tree type identified by AI")
+    health_assessment = models.CharField(max_length=50, blank=True, null=True, help_text="Health assessment: Healthy/Good/Fair/Poor")
+    image_quality = models.CharField(max_length=50, blank=True, null=True, help_text="Image quality: High/Medium/Low")
+    gps_validation = models.BooleanField(default=True, help_text="GPS location matches tree type region")
+    ai_analysis = models.TextField(blank=True, help_text="Detailed AI analysis from Groq")
+    ai_confidence = models.CharField(max_length=50, blank=True, null=True, help_text="AI analysis confidence: high/medium/low")
+    verified = models.BooleanField(default=False, help_text="Record verified by admin")
+    
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -186,8 +197,49 @@ class TreeRecord(models.Model):
             print(f"Error extracting EXIF data: {e}")
     
     def save(self, *args, **kwargs):
-        """Override save to extract EXIF data before saving."""
+        """Override save to extract EXIF data and analyze authenticity before saving."""
         if self.photo and not self.photo_datetime:
             # Only extract if EXIF data hasn't been extracted yet
             self.extract_exif_data()
+        
+        # Analyze image authenticity with Groq AI on creation or if photo changed
+        if self.photo and not self.authenticity_score:
+            self.analyze_authenticity()
+        
         super().save(*args, **kwargs)
+    
+    def analyze_authenticity(self):
+        """Analyze image authenticity using Groq AI."""
+        try:
+            from .groq_service import analyze_tree_image
+            
+            # Prepare GPS data for analysis
+            gps_data = {}
+            if self.latitude:
+                gps_data['latitude'] = self.latitude
+            if self.longitude:
+                gps_data['longitude'] = self.longitude
+            if self.gps_altitude:
+                gps_data['altitude'] = self.gps_altitude
+            
+            # Call Groq AI for analysis
+            analysis_result = analyze_tree_image(
+                image_file=self.photo,
+                gps_data=gps_data if gps_data else None
+            )
+            
+            # Store results
+            self.authenticity_score = analysis_result.get('authenticity_score', 0)
+            self.is_authentic_image = analysis_result.get('is_tree', True)
+            self.ai_tree_type = analysis_result.get('tree_type', '')
+            self.health_assessment = analysis_result.get('health_assessment', '')
+            self.image_quality = analysis_result.get('image_quality', '')
+            self.gps_validation = analysis_result.get('gps_validation', True)
+            self.ai_analysis = analysis_result.get('analysis', '')
+            self.ai_confidence = analysis_result.get('confidence', 'low')
+            
+            print(f"✓ Groq AI Analysis Complete - Score: {self.authenticity_score}, Authentic: {self.is_authentic_image}")
+            
+        except Exception as e:
+            print(f"Error during AI analysis: {e}")
+            self.ai_analysis = f"Error: {str(e)}"
