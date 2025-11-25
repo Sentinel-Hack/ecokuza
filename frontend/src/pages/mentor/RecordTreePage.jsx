@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, X, Camera } from 'lucide-react';
+import { ENDPOINTS, apiCall } from '../../lib/api';
 
 const TREE_SPECIES = [
   'Acacia',
@@ -116,12 +117,49 @@ export default function RecordTreePage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // TODO: Send form data to backend
-    alert('Tree record saved! (Not yet connected to backend)');
-    setSelectedOption(null);
-    setFormData({ species: '', type: '', location: '', photo: null, notes: '' });
-    setPhotoPreview(null);
+
+    const getPosition = () => new Promise((resolve) => {
+      if (!navigator.geolocation) return resolve(null);
+      navigator.geolocation.getCurrentPosition(
+        (pos) => resolve(pos),
+        () => resolve(null),
+        { timeout: 7000 }
+      );
+    });
+
+    (async () => {
+      try {
+        const pos = await getPosition();
+
+        const payload = new FormData();
+        payload.append('record_type', 'plant');
+        payload.append('species', formData.species);
+        payload.append('tree_type', formData.type);
+        payload.append('location_description', formData.location);
+        payload.append('notes', formData.notes || '');
+        if (formData.photo) payload.append('photo', formData.photo);
+        if (pos && pos.coords) {
+          payload.append('latitude', pos.coords.latitude);
+          payload.append('longitude', pos.coords.longitude);
+          if (pos.coords.altitude !== null) payload.append('altitude', pos.coords.altitude);
+        }
+
+        // Use centralized API helper. apiCall now handles FormData properly.
+        const res = await apiCall(ENDPOINTS.TREES_RECORDS, {
+          method: 'POST',
+          body: payload,
+        });
+
+        console.log('Tree record response:', res);
+        alert('Tree record saved successfully');
+        setSelectedOption(null);
+        setFormData({ species: '', type: '', location: '', photo: null, notes: '' });
+        setPhotoPreview(null);
+      } catch (err) {
+        console.error('Failed to save tree record', err);
+        alert(err?.payload?.detail || err.message || 'Failed to save tree record');
+      }
+    })();
   };
 
   // Show tree planting form

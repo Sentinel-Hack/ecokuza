@@ -31,11 +31,13 @@ export const API_BASE = getAPIBase();
 export const ENDPOINTS = {
   AUTH_SIGNIN: `${API_BASE}/authentification/signin/`,
   AUTH_SIGNUP: `${API_BASE}/authentification/signup/`,
+  TREES_RECORDS: `${API_BASE}/trees/records/`,
 };
 
 export async function apiCall(url, options = {}) {
+  const isFormData = options.body instanceof FormData;
   const headers = {
-    'Content-Type': 'application/json',
+    ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
     ...(options.headers || {}),
   };
 

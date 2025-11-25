@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from PIL import Image
-from PIL.ExifTags import TAGS
+from PIL.ExifTags import TAGS, GPSTAGS
 from datetime import datetime
 import io
 
@@ -39,6 +39,9 @@ class TreeRecord(models.Model):
     # GPS coordinates (captured from phone)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
+    gps_altitude = models.FloatField(null=True, blank=True)
+    gps_speed = models.FloatField(null=True, blank=True)
+    gps_img_direction = models.FloatField(null=True, blank=True)
     
     # Photo and metadata
     photo = models.ImageField(upload_to='trees/%Y/%m/%d/')
@@ -100,6 +103,84 @@ class TreeRecord(models.Model):
                         try:
                             self.photo_datetime = datetime.strptime(value, '%Y:%m:%d %H:%M:%S')
                         except ValueError:
+                            pass
+
+                # Extract GPS info if present
+                gps_info = exif_data.get(34853) or exif_data.get('GPSInfo')
+                if gps_info:
+                    gps_parsed = {}
+                    # gps_info may be in numeric tag form or already decoded
+                    if isinstance(gps_info, dict):
+                        raw_gps = gps_info
+                    else:
+                        raw_gps = {}
+                        for key, val in gps_info.items():
+                            decoded = GPSTAGS.get(key, key)
+                            raw_gps[decoded] = val
+
+                    def _to_deg(value):
+                        # value is tuple of rationals ((num,den),(num,den),(num,den))
+                        try:
+                            d = value[0][0] / value[0][1]
+                            m = value[1][0] / value[1][1]
+                            s = value[2][0] / value[2][1]
+                            return d + (m / 60.0) + (s / 3600.0)
+                        except Exception:
+                            return None
+
+                    lat = None
+                    lon = None
+                    if 'GPSLatitude' in raw_gps and 'GPSLatitudeRef' in raw_gps:
+                        lat = _to_deg(raw_gps.get('GPSLatitude'))
+                        if raw_gps.get('GPSLatitudeRef') in ['S', 'south', 'SOUTH']:
+                            lat = -lat if lat is not None else None
+                    if 'GPSLongitude' in raw_gps and 'GPSLongitudeRef' in raw_gps:
+                        lon = _to_deg(raw_gps.get('GPSLongitude'))
+                        if raw_gps.get('GPSLongitudeRef') in ['W', 'west', 'WEST']:
+                            lon = -lon if lon is not None else None
+
+                    if lat is not None:
+                        try:
+                            self.latitude = float(lat)
+                        except Exception:
+                            pass
+                    if lon is not None:
+                        try:
+                            self.longitude = float(lon)
+                        except Exception:
+                            pass
+
+                    # Altitude
+                    if 'GPSAltitude' in raw_gps:
+                        try:
+                            alt = raw_gps.get('GPSAltitude')
+                            if isinstance(alt, tuple):
+                                self.gps_altitude = float(alt[0]) / float(alt[1])
+                            else:
+                                self.gps_altitude = float(alt)
+                        except Exception:
+                            pass
+
+                    # Speed (may be GPSSpeed or GPSSpeedRef)
+                    if 'GPSSpeed' in raw_gps:
+                        try:
+                            sp = raw_gps.get('GPSSpeed')
+                            if isinstance(sp, tuple):
+                                self.gps_speed = float(sp[0]) / float(sp[1])
+                            else:
+                                self.gps_speed = float(sp)
+                        except Exception:
+                            pass
+
+                    # Direction
+                    if 'GPSImgDirection' in raw_gps:
+                        try:
+                            dirv = raw_gps.get('GPSImgDirection')
+                            if isinstance(dirv, tuple):
+                                self.gps_img_direction = float(dirv[0]) / float(dirv[1])
+                            else:
+                                self.gps_img_direction = float(dirv)
+                        except Exception:
                             pass
         except Exception as e:
             print(f"Error extracting EXIF data: {e}")
