@@ -164,11 +164,11 @@ export default function RecordTreePage() {
               <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Tree Photo *
               </label>
-              <div className="flex gap-4">
-                <div className="flex-1">
-                  <label className="flex items-center justify-center gap-2 px-4 py-8 border-2 border-dashed border-gray-300 rounded-md cursor-pointer hover:border-green-500 hover:bg-green-50 transition-colors">
-                    <Camera className="w-6 h-6 text-gray-600" />
-                    <span className="text-gray-700 font-medium">Take or upload photo</span>
+              <div>
+                {!photoPreview ? (
+                  <label className="flex items-center justify-center gap-2 px-4 py-8 border-2 border-dashed border-green-400 rounded-md cursor-pointer hover:border-green-500 hover:bg-green-50 transition-colors bg-green-50">
+                    <Camera className="w-6 h-6 text-green-600" />
+                    <span className="text-green-700 font-medium">Take Photo</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -178,13 +178,12 @@ export default function RecordTreePage() {
                       required={!formData.photo}
                     />
                   </label>
-                </div>
-                {photoPreview && (
-                  <div className="flex-1">
+                ) : (
+                  <div>
                     <img
                       src={photoPreview}
                       alt="Tree preview"
-                      className="w-full h-32 object-cover rounded-md"
+                      className="w-full h-48 object-cover rounded-md border-2 border-green-300"
                     />
                     <button
                       type="button"
@@ -192,9 +191,9 @@ export default function RecordTreePage() {
                         setPhotoPreview(null);
                         setFormData(prev => ({ ...prev, photo: null }));
                       }}
-                      className="mt-2 text-sm text-red-600 hover:text-red-800 font-medium"
+                      className="mt-3 w-full px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 font-medium rounded-md transition-colors"
                     >
-                      Remove photo
+                      Retake Photo
                     </button>
                   </div>
                 )}
