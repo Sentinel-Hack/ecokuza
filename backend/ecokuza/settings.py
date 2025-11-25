@@ -19,7 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-&%(y6n(f)$9*sc^o&gq&^qx^3#8e7u0_m9*8c37_ci*@_xu)lr')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+# Default to True for local development, False for production
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 # Allowed hosts
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'ecokuza.onrender.com,localhost,127.0.0.1').split(',')

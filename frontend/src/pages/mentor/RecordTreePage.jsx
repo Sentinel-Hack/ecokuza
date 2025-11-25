@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { ArrowLeft, X } from 'lucide-react';
 
 export default function RecordTreePage() {
@@ -24,10 +23,10 @@ export default function RecordTreePage() {
     return (
       <div className="flex flex-col h-screen bg-background">
         <div className="flex items-center gap-3 p-4 border-b bg-background">
-          <Button variant="ghost" size="sm" onClick={handleCancel} className="gap-2">
+          <button onClick={handleCancel} className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-md transition-colors">
             <ArrowLeft className="w-4 h-4" />
             Back
-          </Button>
+          </button>
           <div>
             <h1 className="text-xl font-bold">
               {selectedOption === 'plant' ? 'Plant New Tree' : 'Update Tree Progress'}
@@ -45,13 +44,12 @@ export default function RecordTreePage() {
           />
         </div>
         <div className="fixed right-4 bottom-4">
-          <Button
-            variant="ghost"
-            size="sm"
+          <button
             onClick={() => window.open('https://arcg.is/191rL50', '_blank')}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
           >
             Open map in new tab
-          </Button>
+          </button>
         </div>
       </div>
     );
@@ -76,28 +74,62 @@ export default function RecordTreePage() {
         </p>
 
         <div className="space-y-3">
-          <Button
+          <button
             onClick={handlePlantNewTree}
-            className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-lg font-semibold"
+            style={{
+              width: '100%',
+              backgroundColor: '#16a34a',
+              color: 'white',
+              padding: '12px 16px',
+              borderRadius: '6px',
+              fontSize: '16px',
+              fontWeight: '600',
+              border: 'none',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#15803d'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#16a34a'}
           >
             Plant New Tree
-          </Button>
+          </button>
 
-          <Button
+          <button
             onClick={handleUpdateProgress}
-            variant="outline"
-            className="w-full py-6 text-lg font-semibold"
+            style={{
+              width: '100%',
+              backgroundColor: '#2563eb',
+              color: 'white',
+              padding: '12px 16px',
+              borderRadius: '6px',
+              fontSize: '16px',
+              fontWeight: '600',
+              border: 'none',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#1d4ed8'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#2563eb'}
           >
             Update Tree Progress
-          </Button>
+          </button>
 
-          <Button
+          <button
             onClick={handleCancel}
-            variant="ghost"
-            className="w-full py-6 text-lg font-semibold text-gray-600 hover:text-gray-800"
+            style={{
+              width: '100%',
+              backgroundColor: '#d1d5db',
+              color: '#1f2937',
+              padding: '12px 16px',
+              borderRadius: '6px',
+              fontSize: '16px',
+              fontWeight: '600',
+              border: 'none',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#9ca3af'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#d1d5db'}
           >
             Cancel
-          </Button>
+          </button>
         </div>
       </div>
     </div>
