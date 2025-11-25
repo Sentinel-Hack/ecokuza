@@ -833,27 +833,7 @@ This 5-10 minute demo shows:
 
 ## 📊 Pitch Deck
 
-### [INSERT PITCH DECK HERE]
-
-**Download:** [Add Google Drive/OneDrive/Dropbox link]
-
-The pitch deck includes:
-1. **Problem Statement** - Current challenges in environmental tracking
-2. **Solution Overview** - How Ecokuza solves these problems
-3. **Market Opportunity** - Global environmental market size
-4. **Key Features** - Unique capabilities and differentiators
-5. **Technology** - Blockchain and AI integration
-6. **Business Model** - Revenue streams and pricing
-7. **Roadmap** - 12-24 month development plan
-8. **Team** - Founder and team backgrounds
-9. **Financials** - Funding request and use of funds
-10. **Contact** - Get in touch information
-
-**To add your pitch deck:**
-1. Create presentation on Google Slides or PowerPoint
-2. Upload to cloud storage
-3. Make shareable link
-4. Add here: `[LINK TEXT](URL)`
+### https://docs.google.com/presentation/d/1y0C8FjQ2yItphYLIXIu5dXY7KyDjBokF/edit?usp=sharing&ouid=109576960336579414961&rtpof=true&sd=true
 
 ---
 
