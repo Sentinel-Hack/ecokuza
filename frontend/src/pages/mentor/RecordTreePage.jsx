@@ -40,7 +40,13 @@ export default function RecordTreePage() {
   });
   const [photoPreview, setPhotoPreview] = useState(null);
 
-  const handlePlantNewTree = () => {
+  const handlePlantNewTree = async () => {
+    if (isMobileDevice()) {
+      const gpsEnabled = await requestGPS();
+      if (!gpsEnabled) {
+        return;
+      }
+    }
     setSelectedOption('plant');
   };
 
@@ -80,6 +86,32 @@ export default function RecordTreePage() {
 
   const isMobileDevice = () => {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  };
+
+  const requestGPS = () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser');
+      return false;
+    }
+
+    return new Promise((resolve) => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log('GPS enabled:', position.coords);
+          resolve(true);
+        },
+        (error) => {
+          console.log('GPS error:', error);
+          if (error.code === error.PERMISSION_DENIED) {
+            alert('GPS permission denied. Please enable location services and try again.');
+          } else {
+            alert('Unable to access GPS. Please enable location services.');
+          }
+          resolve(false);
+        },
+        { timeout: 5000 }
+      );
+    });
   };
 
   const handleSubmit = (e) => {
