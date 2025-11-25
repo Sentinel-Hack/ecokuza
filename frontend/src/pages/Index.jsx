@@ -80,10 +80,6 @@ export default function Index() {
               Record Tree Update
             </Link>
           </Button>
-          <Button variant="outline" className="flex-1 h-12 gap-2">
-            <TreeDeciduous className="w-5 h-5" />
-            View All Trees
-          </Button>
         </div>
 
         {/* Dashboard Sections */}
