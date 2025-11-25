@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, X, Camera } from 'lucide-react';
+import { ArrowLeft, X, Camera, Check, AlertCircle, ChevronDown } from 'lucide-react';
 import { ENDPOINTS, apiCall } from '../../lib/api';
 import { useToast } from '../../hooks/use-toast';
 
@@ -564,82 +564,100 @@ export default function RecordTreePage() {
     );
   }
 
-  // Show the popup with three options
+  // Show the popup with three options - MODERN MATERIAL DESIGN
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Record Tree Update</h1>
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-end md:items-center justify-center z-50 p-0 md:p-4">
+      <div className="bg-white w-full md:w-full md:max-w-md rounded-t-3xl md:rounded-2xl shadow-2xl md:shadow-xl overflow-hidden animate-in slide-in-from-bottom-5 duration-300">
+        {/* Header */}
+        <div className="relative bg-gradient-to-r from-green-600 to-green-700 px-6 py-8 md:py-6">
           <button
             onClick={() => navigate(-1)}
-            className="text-gray-400 hover:text-gray-600"
+            className="absolute top-4 right-4 p-2 hover:bg-green-700/50 rounded-full transition-all md:block hidden"
           >
-            <X className="w-6 h-6" />
+            <X className="w-6 h-6 text-white" />
           </button>
+          
+          <h1 className="text-3xl md:text-2xl font-bold text-white">Record Tree Update</h1>
+          <p className="text-green-100 text-sm md:text-xs mt-2">
+            Choose what you'd like to do today
+          </p>
         </div>
 
-        <p className="text-gray-600 mb-8 text-center">
-          Choose an action to record tree information
-        </p>
-
-        <div className="space-y-3">
+        {/* Content */}
+        <div className="px-6 py-8 md:py-6 space-y-3">
+          {/* Plant New Tree Button */}
           <button
             onClick={handlePlantNewTree}
-            style={{
-              width: '100%',
-              backgroundColor: '#16a34a',
-              color: 'white',
-              padding: '12px 16px',
-              borderRadius: '6px',
-              fontSize: '16px',
-              fontWeight: '600',
-              border: 'none',
-              cursor: 'pointer'
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#15803d'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#16a34a'}
+            className="w-full group relative bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 hover:border-green-400 hover:shadow-lg active:shadow-md p-6 md:p-5 rounded-2xl transition-all duration-300 text-left overflow-hidden hover:scale-105 active:scale-100"
           >
-            Plant New Tree
+            {/* Decorative background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-green-400/0 to-green-500/0 group-hover:from-green-400/5 group-hover:to-green-500/5 transition-all" />
+            
+            <div className="relative flex items-start justify-between">
+              <div>
+                <h2 className="text-xl md:text-lg font-bold text-green-900 flex items-center gap-2">
+                  <span className="flex-shrink-0 w-10 h-10 md:w-9 md:h-9 rounded-full bg-green-200 flex items-center justify-center text-xl">
+                    🌱
+                  </span>
+                  Plant New Tree
+                </h2>
+                <p className="text-green-700 text-sm md:text-xs mt-2">
+                  Record a newly planted tree with photo, species, and location
+                </p>
+              </div>
+              <ChevronDown className="w-6 h-6 md:w-5 md:h-5 text-green-600 group-hover:translate-x-1 transition-transform flex-shrink-0" style={{ transform: 'rotate(-90deg)' }} />
+            </div>
           </button>
 
+          {/* Update Tree Progress Button */}
           <button
             onClick={handleUpdateProgress}
-            style={{
-              width: '100%',
-              backgroundColor: '#2563eb',
-              color: 'white',
-              padding: '12px 16px',
-              borderRadius: '6px',
-              fontSize: '16px',
-              fontWeight: '600',
-              border: 'none',
-              cursor: 'pointer'
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#1d4ed8'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#2563eb'}
+            className="w-full group relative bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 hover:border-blue-400 hover:shadow-lg active:shadow-md p-6 md:p-5 rounded-2xl transition-all duration-300 text-left overflow-hidden hover:scale-105 active:scale-100"
           >
-            Update Tree Progress
+            {/* Decorative background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-400/0 to-blue-500/0 group-hover:from-blue-400/5 group-hover:to-blue-500/5 transition-all" />
+            
+            <div className="relative flex items-start justify-between">
+              <div>
+                <h2 className="text-xl md:text-lg font-bold text-blue-900 flex items-center gap-2">
+                  <span className="flex-shrink-0 w-10 h-10 md:w-9 md:h-9 rounded-full bg-blue-200 flex items-center justify-center text-xl">
+                    📈
+                  </span>
+                  Update Progress
+                </h2>
+                <p className="text-blue-700 text-sm md:text-xs mt-2">
+                  Log height, health, maintenance, and growth for an existing tree
+                </p>
+              </div>
+              <ChevronDown className="w-6 h-6 md:w-5 md:h-5 text-blue-600 group-hover:translate-x-1 transition-transform flex-shrink-0" style={{ transform: 'rotate(-90deg)' }} />
+            </div>
           </button>
 
+          {/* Divider */}
+          <div className="flex items-center gap-3 py-2">
+            <div className="flex-1 h-px bg-gray-200" />
+            <span className="text-gray-400 text-xs md:text-[10px]">or</span>
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+
+          {/* Cancel Button */}
           <button
             onClick={handleCancel}
-            style={{
-              width: '100%',
-              backgroundColor: '#d1d5db',
-              color: '#1f2937',
-              padding: '12px 16px',
-              borderRadius: '6px',
-              fontSize: '16px',
-              fontWeight: '600',
-              border: 'none',
-              cursor: 'pointer'
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#9ca3af'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#d1d5db'}
+            className="w-full px-6 md:px-4 py-4 md:py-3 text-gray-700 font-medium text-lg md:text-base hover:bg-gray-100 active:bg-gray-200 rounded-2xl transition-all duration-200 border border-gray-200 hover:scale-105 active:scale-100"
           >
             Cancel
           </button>
         </div>
+
+        {/* Footer Info */}
+        <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 hidden md:block">
+          <p className="text-gray-500 text-xs">
+            📍 GPS will be captured automatically when you submit forms
+          </p>
+        </div>
+
+        {/* Mobile close indicator */}
+        <div className="md:hidden h-1 bg-gray-300 rounded-full mx-auto mb-2 w-12" />
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { DashboardLayout } from "@/components/DashboardLayout";
 import { InsightCard } from "@/components/InsightCard";
 
 export default function InsightsPage() {
@@ -21,19 +22,21 @@ export default function InsightsPage() {
   ];
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto p-4">
-      <div className="space-y-2">
-        <h1 className="text-2xl font-bold">AI Growth Insights</h1>
-        <p className="text-sm text-muted-foreground">
-          Get intelligent insights about your trees' health and growth patterns
-        </p>
-      </div>
+    <DashboardLayout>
+      <div className="space-y-6 max-w-7xl mx-auto p-4">
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold">AI Growth Insights</h1>
+          <p className="text-sm text-muted-foreground">
+            Get intelligent insights about your trees' health and growth patterns
+          </p>
+        </div>
 
-      <div className="space-y-4">
-        {insights.map((insight, index) => (
-          <InsightCard key={index} {...insight} />
-        ))}
+        <div className="space-y-4">
+          {insights.map((insight, index) => (
+            <InsightCard key={index} {...insight} />
+          ))}
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

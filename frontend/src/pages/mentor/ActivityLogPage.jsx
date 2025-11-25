@@ -1,4 +1,5 @@
 import React from "react";
+import { DashboardLayout } from "@/components/DashboardLayout";
 import { ActivityLogItem } from "@/components/ActivityLogItem";
 import { Camera, Droplets, TreeDeciduous } from "lucide-react";
 
@@ -11,19 +12,21 @@ export default function ActivityLogPage() {
   ];
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto p-4">
-      <div className="space-y-2">
-        <h1 className="text-2xl font-bold">Recent Activity</h1>
-        <p className="text-sm text-muted-foreground">
-          Track all activities in your 4K Club
-        </p>
-      </div>
+    <DashboardLayout>
+      <div className="space-y-6 max-w-7xl mx-auto p-4">
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold">Recent Activity</h1>
+          <p className="text-sm text-muted-foreground">
+            Track all activities in your 4K Club
+          </p>
+        </div>
 
-      <div className="space-y-2">
-        {activities.map((activity, index) => (
-          <ActivityLogItem key={index} {...activity} />
-        ))}
+        <div className="space-y-2">
+          {activities.map((activity, index) => (
+            <ActivityLogItem key={index} {...activity} />
+          ))}
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

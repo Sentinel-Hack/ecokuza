@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { DashboardLayout } from '@/components/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -128,134 +129,136 @@ export default function LeaderboardPage() {
   );
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Leaderboard</h1>
-          <p className="text-muted-foreground mt-1">
-            Track your progress and compete with others
-          </p>
-        </div>
-        <Button
-          onClick={handleRefresh}
-          variant="outline"
-          size="icon"
-          disabled={loading}
-        >
-          <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-        </Button>
-      </div>
-
-      {/* User Rank Card */}
-      {userRank && (
-        <Card className="bg-linear-to-r from-blue-600/10 to-purple-600/10 border-blue-200">
-          <CardContent className="pt-6">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Your Rank</p>
-                <p className="text-3xl font-bold text-blue-600">
-                  #{userRank.rank}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  out of {userRank.total_users} users
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Total Points</p>
-                <p className="text-3xl font-bold">{userRank.points}</p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Trees Verified</p>
-                <p className="text-3xl font-bold text-green-600">
-                  {userRank.tree_records_verified}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Trees Submitted</p>
-                <p className="text-3xl font-bold">
-                  {userRank.tree_records_total}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Verification Rate</p>
-                <p className="text-3xl font-bold text-purple-600">
-                  {Math.round(userRank.percentage_verified)}%
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Leaderboard Tabs */}
-      <Tabs defaultValue="alltime" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="alltime" className="flex items-center gap-2">
-            <TrendingUp className="w-4 h-4" />
-            All Time
-          </TabsTrigger>
-          <TabsTrigger value="weekly" className="flex items-center gap-2">
-            <Trophy className="w-4 h-4" />
-            This Week
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="alltime">
-          <Card>
-            <CardHeader>
-              <CardTitle>All Time Leaderboard</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <div className="text-center py-8">
-                  <div className="inline-block animate-spin">
-                    <RefreshCw className="w-6 h-6" />
-                  </div>
-                  <p className="text-muted-foreground mt-2">Loading leaderboard...</p>
-                </div>
-              ) : (
-                <LeaderboardTable entries={allTimeLeaderboard} />
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="weekly">
-          <Card>
-            <CardHeader>
-              <CardTitle>Weekly Leaderboard</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <div className="text-center py-8">
-                  <div className="inline-block animate-spin">
-                    <RefreshCw className="w-6 h-6" />
-                  </div>
-                  <p className="text-muted-foreground mt-2">Loading leaderboard...</p>
-                </div>
-              ) : (
-                <LeaderboardTable entries={weeklyLeaderboard} isWeekly={true} />
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-
-      {/* Limit Selector */}
-      <div className="flex items-center justify-center gap-2">
-        <span className="text-sm text-muted-foreground">Show:</span>
-        {[5, 10, 20, 50].map((num) => (
+    <DashboardLayout>
+      <div className="space-y-6 max-w-7xl mx-auto p-4">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Leaderboard</h1>
+            <p className="text-muted-foreground mt-1">
+              Track your progress and compete with others
+            </p>
+          </div>
           <Button
-            key={num}
-            variant={limit === num ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setLimit(num)}
+            onClick={handleRefresh}
+            variant="outline"
+            size="icon"
+            disabled={loading}
           >
-            {num}
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </Button>
-        ))}
+        </div>
+
+        {/* User Rank Card */}
+        {userRank && (
+          <Card className="bg-linear-to-r from-blue-600/10 to-purple-600/10 border-blue-200">
+            <CardContent className="pt-6">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">Your Rank</p>
+                  <p className="text-3xl font-bold text-blue-600">
+                    #{userRank.rank}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    out of {userRank.total_users} users
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Total Points</p>
+                  <p className="text-3xl font-bold">{userRank.points}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Trees Verified</p>
+                  <p className="text-3xl font-bold text-green-600">
+                    {userRank.tree_records_verified}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Trees Submitted</p>
+                  <p className="text-3xl font-bold">
+                    {userRank.tree_records_total}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Verification Rate</p>
+                  <p className="text-3xl font-bold text-purple-600">
+                    {Math.round(userRank.percentage_verified)}%
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Leaderboard Tabs */}
+        <Tabs defaultValue="alltime" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="alltime" className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              All Time
+            </TabsTrigger>
+            <TabsTrigger value="weekly" className="flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              This Week
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="alltime">
+            <Card>
+              <CardHeader>
+                <CardTitle>All Time Leaderboard</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <div className="text-center py-8">
+                    <div className="inline-block animate-spin">
+                      <RefreshCw className="w-6 h-6" />
+                    </div>
+                    <p className="text-muted-foreground mt-2">Loading leaderboard...</p>
+                  </div>
+                ) : (
+                  <LeaderboardTable entries={allTimeLeaderboard} />
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="weekly">
+            <Card>
+              <CardHeader>
+                <CardTitle>Weekly Leaderboard</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <div className="text-center py-8">
+                    <div className="inline-block animate-spin">
+                      <RefreshCw className="w-6 h-6" />
+                    </div>
+                    <p className="text-muted-foreground mt-2">Loading leaderboard...</p>
+                  </div>
+                ) : (
+                  <LeaderboardTable entries={weeklyLeaderboard} isWeekly={true} />
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        {/* Limit Selector */}
+        <div className="flex items-center justify-center gap-2">
+          <span className="text-sm text-muted-foreground">Show:</span>
+          {[5, 10, 20, 50].map((num) => (
+            <Button
+              key={num}
+              variant={limit === num ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setLimit(num)}
+            >
+              {num}
+            </Button>
+          ))}
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

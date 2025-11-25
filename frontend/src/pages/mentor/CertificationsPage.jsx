@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { DashboardLayout } from '@/components/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -122,8 +123,9 @@ export default function CertificationsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
+    <DashboardLayout>
+      <div className="space-y-6 max-w-7xl mx-auto p-4">
+        {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Certifications & Badges</h1>
@@ -199,7 +201,7 @@ export default function CertificationsPage() {
         </div>
       )}
 
-      {/* All Certifications */}
+        {/* All Certifications */}
       <div className="space-y-4">
         <h2 className="text-2xl font-bold flex items-center gap-2">
           <Award className="w-6 h-6" />
@@ -299,6 +301,7 @@ export default function CertificationsPage() {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }

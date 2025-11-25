@@ -64,12 +64,10 @@ export default function Index() {
         </div>
 
         {/* Summary Cards */}
-        <div className="overflow-x-auto -mx-4 px-4">
-          <div className="flex gap-3 pb-2">
-            {summaryData.map((data, index) => (
-              <SummaryCard key={index} {...data} />
-            ))}
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {summaryData.map((data, index) => (
+            <SummaryCard key={index} {...data} />
+          ))}
         </div>
 
         {/* Quick Actions */}

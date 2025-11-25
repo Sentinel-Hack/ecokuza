@@ -50,10 +50,12 @@ export function DashboardLayout({ children }) {
         <div className="flex flex-col h-full">
           <div className="h-16 flex items-center justify-between px-4 border-b border-border">
             <div className={cn("flex items-center gap-3", !sidebarOpen && "lg:justify-center lg:w-full")}>
-              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                <TreeDeciduous className="w-6 h-6 text-primary-foreground" />
-              </div>
-              {sidebarOpen && <span className="font-medium text-lg">4K Club</span>}
+              <img 
+                src="/ecokuza_logo.png" 
+                alt="Ecokuza Logo" 
+                className="w-10 h-10 rounded-full"
+              />
+              {sidebarOpen && <span className="font-medium text-lg">Ecokuza</span>}
             </div>
             <div className="flex items-center gap-1">
               <Button
@@ -122,8 +124,12 @@ export function DashboardLayout({ children }) {
             <Menu className="w-6 h-6" />
           </Button>
           <div className="ml-3 flex items-center gap-2">
-            <TreeDeciduous className="w-6 h-6 text-primary" />
-            <span className="font-medium text-lg">4K Club</span>
+            <img 
+              src="/ecokuza_logo.png" 
+              alt="Ecokuza Logo" 
+              className="w-6 h-6 rounded-full"
+            />
+            <span className="font-medium text-lg">Ecokuza</span>
           </div>
         </header>
 
