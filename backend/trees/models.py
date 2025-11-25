@@ -53,6 +53,11 @@ class TreeRecord(models.Model):
     
     # Additional info
     notes = models.TextField(blank=True)
+    # Update-specific fields
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='updates', help_text='Reference to the original planted tree record when this is an update')
+    observation_date = models.DateField(null=True, blank=True, help_text='Date for the observation/update')
+    height_cm = models.FloatField(null=True, blank=True, help_text='Measured height in centimeters')
+    health_notes = models.TextField(blank=True, help_text='Optional notes about health, pests, watering, soil, etc.')
     
     # AI Authenticity & Verification (Groq AI)
     authenticity_score = models.IntegerField(default=0, help_text="0-100: Authenticity score from AI analysis")
@@ -200,12 +205,23 @@ class TreeRecord(models.Model):
         """Override save to extract EXIF data and analyze authenticity before saving."""
         # Check if verification status changed
         is_new_verification = False
+        photo_changed = False
         if self.pk:
             try:
                 old_instance = TreeRecord.objects.get(pk=self.pk)
                 # If verification changed from False to True, award points
                 if not old_instance.verified and self.verified:
                     is_new_verification = True
+                # Detect if photo was changed on update
+                try:
+                    if old_instance.photo and self.photo:
+                        photo_changed = old_instance.photo.name != self.photo.name
+                    elif old_instance.photo and not self.photo:
+                        photo_changed = True
+                    elif not old_instance.photo and self.photo:
+                        photo_changed = True
+                except Exception:
+                    photo_changed = False
             except TreeRecord.DoesNotExist:
                 pass
         
@@ -213,8 +229,8 @@ class TreeRecord(models.Model):
             # Only extract if EXIF data hasn't been extracted yet
             self.extract_exif_data()
         
-        # Analyze image authenticity with Groq AI on creation or if photo changed
-        if self.photo and not self.authenticity_score:
+        # Analyze image authenticity with Groq AI on creation, if photo changed, or if no score yet
+        if self.photo and (photo_changed or not self.authenticity_score):
             self.analyze_authenticity()
         
         super().save(*args, **kwargs)
@@ -228,17 +244,21 @@ class TreeRecord(models.Model):
         try:
             from authentification.models import PointsLog, Notification
             
-            # Points formula: base 100 + authenticity bonus
+            # Points formula: base 100 + authenticity bonus for both plant and update
             base_points = 100
             authenticity_bonus = self.authenticity_score  # 0-100
             total_points = base_points + authenticity_bonus
-            
+
+            # Choose points_type and notification type depending on record_type
+            points_type = 'tree_verified' if self.record_type == 'plant' else 'tree_update_verified'
+            notif_type = 'tree_verified' if self.record_type == 'plant' else 'tree_update_verified'
+
             # Create points log entry
             points_log = PointsLog.objects.create(
                 user=self.user,
                 points=total_points,
-                points_type='tree_verified',
-                description=f"Tree record verified: {self.species} - Authenticity score: {self.authenticity_score}",
+                points_type=points_type,
+                description=f"{self.get_record_type_display()} verified: {self.species} - Authenticity score: {self.authenticity_score}",
                 tree_record=self
             )
             
@@ -256,9 +276,9 @@ class TreeRecord(models.Model):
                 Notification.objects.create(
                     recipient=tutor,
                     sender=self.user,
-                    notification_type='tree_verified',
-                    title=f'Tree Record Verified',
-                    message=f'{self.user.first_name or self.user.email} earned {total_points} points for verifying a {self.species} tree record',
+                    notification_type=notif_type,
+                    title=f'{self.get_record_type_display()} Verified',
+                    message=f'{self.user.first_name or self.user.email} earned {total_points} points for a verified {self.get_record_type_display().lower()} ({self.species})',
                     tree_record=self,
                     points_awarded=total_points
                 )

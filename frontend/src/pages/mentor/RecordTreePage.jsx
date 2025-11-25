@@ -51,6 +51,8 @@ export default function RecordTreePage() {
     photo: null,
     height: '',
     health_notes: '',
+    maintenance_activities: [],
+    maintenance_other: '',
     latitude: null,
     longitude: null
   });
@@ -75,6 +77,14 @@ export default function RecordTreePage() {
   const handleUpdateInputChange = (e) => {
     const { name, value } = e.target;
     setUpdateForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const toggleMaintenanceActivity = (activity) => {
+    setUpdateForm(prev => {
+      const list = new Set(prev.maintenance_activities || []);
+      if (list.has(activity)) list.delete(activity); else list.add(activity);
+      return { ...prev, maintenance_activities: Array.from(list) };
+    });
   };
 
   const handleUpdatePhoto = (e) => {
@@ -113,7 +123,12 @@ export default function RecordTreePage() {
       payload.append('tree_id', updateForm.tree);
       payload.append('date', updateForm.date);
       payload.append('height', updateForm.height || '');
-      payload.append('health_notes', updateForm.health_notes || '');
+        // Combine maintenance activities and health notes into health_notes for backend
+        const maintenance = (updateForm.maintenance_activities || []).join(', ');
+        let combinedHealth = updateForm.health_notes || '';
+        if (maintenance) combinedHealth = (combinedHealth ? combinedHealth + '\n' : '') + `Maintenance: ${maintenance}`;
+        if (updateForm.maintenance_other) combinedHealth = (combinedHealth ? combinedHealth + '\n' : '') + `Other: ${updateForm.maintenance_other}`;
+        payload.append('health_notes', combinedHealth || '');
       payload.append('photo', updateForm.photo);
       if (pos && pos.coords) {
         payload.append('latitude', pos.coords.latitude);
@@ -515,6 +530,23 @@ export default function RecordTreePage() {
             <div className="mb-6">
               <label className="block text-sm font-semibold text-gray-700 mb-2">Health Condition / Notes (Optional)</label>
               <textarea name="health_notes" value={updateForm.health_notes} onChange={handleUpdateInputChange} rows="4" placeholder="e.g., pests observed, watering, sunlight, soil condition" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none resize-none" />
+            </div>
+
+            {/* Maintenance Activities */}
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Maintenance Activities (select all that apply)</label>
+              <div className="grid grid-cols-2 gap-2">
+                {['Watered','Pruned','Weeded','Mulched','Pest removal','Soil care','Support fixed','Protection added'].map(act => (
+                  <label key={act} className="flex items-center gap-2">
+                    <input type="checkbox" checked={updateForm.maintenance_activities.includes(act)} onChange={() => toggleMaintenanceActivity(act)} />
+                    <span className="text-sm">{act}</span>
+                  </label>
+                ))}
+              </div>
+              <div className="mt-3">
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Other (optional)</label>
+                <input type="text" name="maintenance_other" value={updateForm.maintenance_other} onChange={handleUpdateInputChange} placeholder="Describe other activity..." className="w-full px-3 py-2 border border-gray-300 rounded-md" />
+              </div>
             </div>
 
             {/* GPS capture note */}

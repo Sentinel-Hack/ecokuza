@@ -23,6 +23,7 @@ class PointsLog(models.Model):
     
     POINTS_TYPES = [
         ('tree_verified', 'Tree Record Verified'),
+        ('tree_update_verified', 'Tree Update Verified'),
         ('bonus', 'Bonus Points'),
         ('achievement', 'Achievement Unlocked'),
         ('admin_adjustment', 'Admin Adjustment'),
@@ -80,6 +81,7 @@ class Notification(models.Model):
     
     NOTIFICATION_TYPES = [
         ('tree_verified', 'Tree Record Verified'),
+        ('tree_update_verified', 'Tree Update Verified'),
         ('points_awarded', 'Points Awarded'),
         ('new_record', 'New Tree Record Created'),
         ('milestone', 'Milestone Reached'),
